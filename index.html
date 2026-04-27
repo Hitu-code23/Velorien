@@ -104,14 +104,7 @@ musicToggle.addEventListener('click',()=>{
   musicPlaying=!musicPlaying;
 });
 
-/* ====== DARK/LIGHT TOGGLE ====== */
-.theme-toggle{
-  width:36px;height:36px;border:1px solid var(--border);background:transparent;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;color:var(--muted);
-  font-size:.85rem;transition:border-color .3s,color .3s,background .3s;
-  -webkit-tap-highlight-color:transparent;
-}
-.theme-toggle:hover{border-color:var(--gold);color:var(--gold);background:var(--gold-dim);}
+/* ====== DARK/LIGHT TOGGLE — removed ====== */
 
 /* ====== MUSIC TOGGLE ====== */
 .music-toggle{
@@ -547,7 +540,6 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:3.5rem 4
         <span class="music-bar"></span>
       </span>
     </button>
-    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" title="Toggle dark/light mode">☽</button>
     <button class="nav-cta" onclick="scrollToSection('contact')">Start a project</button>
     <button class="hamburger" id="ham" aria-label="Open menu"><span></span><span></span><span></span></button>
   </div>
@@ -952,20 +944,8 @@ musicToggle.addEventListener('click',()=>{
   musicPlaying=!musicPlaying;
 });
 
-/* ====== DARK/LIGHT TOGGLE ====== */
-const themeToggle=document.getElementById('themeToggle');
-let theme=localStorage.getItem('velorien-theme')||'dark';
-applyTheme(theme);
-themeToggle.addEventListener('click',()=>{
-  theme=theme==='dark'?'light':'dark';
-  applyTheme(theme);
-  localStorage.setItem('velorien-theme',theme);
-});
-function applyTheme(t){
-  document.documentElement.setAttribute('data-theme',t);
-  themeToggle.textContent=t==='dark'?'☽':'☀';
-  themeToggle.title=t==='dark'?'Switch to light mode':'Switch to dark mode';
-}
+/* ====== THEME (dark fixed) ====== */
+document.documentElement.setAttribute('data-theme','dark');
 
 /* ====== CALENDLY MODAL ====== */
 function openCalendly(){document.getElementById('calendlyModal').classList.add('open');document.body.style.overflow='hidden';}
