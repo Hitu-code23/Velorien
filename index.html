@@ -34,33 +34,24 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;ove
 
 /* ====== LOADING SCREEN ====== */
 #loader{
-  position:fixed;inset:0;background:var(--dark2);z-index:10000;
-  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1.5rem;
+  position:fixed;inset:0;background:#0c0b09;z-index:10000;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1.4rem;
   transition:opacity .7s var(--ease),visibility .7s;
 }
 #loader.hidden{opacity:0;visibility:hidden;pointer-events:none;}
-.loader-logo{
-  font-family:'Cormorant Garamond',serif;font-size:3.2rem;font-weight:300;letter-spacing:.08em;
-  color:transparent;position:relative;
-  background:linear-gradient(90deg,#0c0b09 50%,#e8c47a 50%);
-  background-size:200% 100%;background-position:0% 0%;
-  -webkit-background-clip:text;background-clip:text;
-  animation:logoReveal 1.6s var(--ease) .3s forwards;
-}
-.loader-logo span{color:transparent;background:inherit;-webkit-background-clip:text;background-clip:text;}
-@keyframes logoReveal{
-  0%{background-position:0% 0%;}
-  100%{background-position:-100% 0%;}
-}
-.loader-line{
-  width:0;height:1px;background:var(--gold);
-  animation:lineGrow 1.2s var(--ease) .8s forwards;
-}
-@keyframes lineGrow{to{width:180px;}}
-.loader-sub{
-  font-size:.63rem;letter-spacing:.35em;text-transform:uppercase;color:rgba(232,196,122,.6);
-  opacity:0;animation:fadeIn .8s ease 1.4s forwards;
-}
+.loader-ring-wrap{position:relative;width:72px;height:72px;flex-shrink:0;}
+.loader-ring-bg{position:absolute;inset:0;border-radius:50%;border:1px solid rgba(232,196,122,.12);}
+.loader-ring-arc{position:absolute;inset:0;border-radius:50%;border:1px solid transparent;border-top-color:#e8c47a;animation:loaderSpin 1.2s linear infinite;}
+.loader-ring-arc2{position:absolute;inset:9px;border-radius:50%;border:1px solid transparent;border-bottom-color:rgba(232,196,122,.45);animation:loaderSpin 1.9s linear infinite reverse;}
+.loader-ring-dot{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:6px;height:6px;border-radius:50%;background:#e8c47a;animation:loaderPulse 1.2s ease infinite;}
+@keyframes loaderSpin{to{transform:rotate(360deg);}}
+@keyframes loaderPulse{0%,100%{opacity:1;transform:translate(-50%,-50%) scale(1);}50%{opacity:.35;transform:translate(-50%,-50%) scale(.55);}}
+.loader-logo{font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:300;letter-spacing:.06em;color:#fff;opacity:0;animation:fadeIn .8s ease .35s forwards;}
+.loader-logo span{color:var(--gold);}
+.loader-sub{font-size:.58rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(232,196,122,.4);opacity:0;animation:fadeIn .6s ease .75s forwards;}
+.loader-bar-wrap{width:140px;height:1px;background:rgba(255,255,255,.07);position:relative;overflow:hidden;opacity:0;animation:fadeIn .4s ease .75s forwards;}
+.loader-bar{position:absolute;left:0;top:0;height:100%;width:0;background:var(--gold);animation:loaderBarFill 2.3s cubic-bezier(0.25,1,0.5,1) .8s forwards;}
+@keyframes loaderBarFill{to{width:100%;}}
 
 /* ====== CURSOR — desktop only ====== */
 @media(pointer:fine){
@@ -129,7 +120,10 @@ nav.scrolled{background:var(--nav-bg);backdrop-filter:blur(18px);-webkit-backdro
 /* ====== HERO ====== */
 #hero{position:relative;height:100vh;min-height:600px;display:flex;align-items:center;justify-content:center;overflow:hidden;}
 #bg-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.82;filter:saturate(.82);}
-.hero-veil{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(12,11,9,.3) 0%,rgba(12,11,9,.05) 50%,rgba(12,11,9,.75) 100%);}
+.hero-veil{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(12,11,9,.3) 0%,rgba(12,11,9,.05) 50%,rgba(12,11,9,.75) 100%);
+  /* FIX: pointer-events:none so veil doesn't block scroll-hint clicks/taps */
+  pointer-events:none;
+}
 [data-theme="light"] .hero-veil{background:linear-gradient(to bottom,rgba(245,240,232,.3) 0%,rgba(245,240,232,.05) 50%,rgba(245,240,232,.75) 100%);}
 .hero-content{position:relative;z-index:5;text-align:center;display:flex;flex-direction:column;align-items:center;gap:1.6rem;padding:0 1.5rem;}
 .eyebrow{font-size:.67rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);opacity:0;animation:fadeUp .9s var(--ease) .4s forwards;}
@@ -142,7 +136,12 @@ nav.scrolled{background:var(--nav-bg);backdrop-filter:blur(18px);-webkit-backdro
 .cta:hover::before{transform:translateX(0);}
 .cta:hover{color:var(--dark);letter-spacing:.22em;border-color:var(--gold);}
 .cta span{position:relative;z-index:1;}
-.scroll-hint{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.6rem;opacity:0;animation:fadeIn 1.5s ease 1.6s forwards;background:none;border:none;cursor:pointer;color:inherit;font-family:'DM Sans',sans-serif;padding:.5rem 1rem;-webkit-tap-highlight-color:transparent;z-index:10;}
+
+/* FIX: scroll-hint z-index raised above hero-veil so it receives touch/click events */
+.scroll-hint{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.6rem;opacity:0;animation:fadeIn 1.5s ease 1.6s forwards;background:none;border:none;cursor:pointer;color:inherit;font-family:'DM Sans',sans-serif;padding:.5rem 1rem;-webkit-tap-highlight-color:transparent;
+  z-index:20; /* was z-index:10, now above hero-veil */
+  pointer-events:all;
+}
 .scroll-hint p{font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);}
 .scroll-line{width:1px;height:38px;background:linear-gradient(to bottom,var(--gold),transparent);animation:pulse 2s ease infinite;}
 
@@ -460,9 +459,15 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:3.5rem 4
 
 <!-- ====== LOADING SCREEN ====== -->
 <div id="loader">
-  <div class="loader-logo">Velorien<span style="color:#e8c47a">.</span></div>
-  <div class="loader-line"></div>
-  <div class="loader-sub">Creative Studio</div>
+  <div class="loader-ring-wrap">
+    <div class="loader-ring-bg"></div>
+    <div class="loader-ring-arc"></div>
+    <div class="loader-ring-arc2"></div>
+    <div class="loader-ring-dot"></div>
+  </div>
+  <div class="loader-logo">Velorien<span>.</span></div>
+  <div class="loader-sub">Loading experience</div>
+  <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
 </div>
 
 <!-- ====== PAGE TRANSITION ====== -->
@@ -485,7 +490,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:3.5rem 4
   </ul>
   <div class="nav-right">
     <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" title="Toggle dark/light mode">☽</button>
-    <button class="nav-cta" onclick="scrollTo('contact')">Start a project</button>
+    <button class="nav-cta" onclick="scrollToSection('contact')">Start a project</button>
     <button class="hamburger" id="ham" aria-label="Open menu"><span></span><span></span><span></span></button>
   </div>
 </nav>
@@ -511,7 +516,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:3.5rem 4
     <h1 class="hero-h1">Where Ideas<br><em>Take Form</em></h1>
     <p class="hero-sub">We craft digital experiences that move people — with precision, intention, and a relentless commitment to craft.</p>
     <div class="divider-line"></div>
-    <button class="cta" onclick="scrollTo('work')"><span>Explore the work →</span></button>
+    <button class="cta" onclick="scrollToSection('work')"><span>Explore the work →</span></button>
   </div>
   <button class="scroll-hint" id="scrollBtn" aria-label="Scroll to about section">
     <p>Scroll</p>
@@ -712,7 +717,8 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:3.5rem 4
 </footer>
 
 <!-- ====== BACK TO TOP ====== -->
-<button id="back-top" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<!-- FIX: use data attribute + JS handler instead of inline onclick to avoid scrollTo name conflict -->
+<button id="back-top" aria-label="Back to top">↑</button>
 
 <!-- ====== CALENDLY MODAL ====== -->
 <div class="calendly-modal" id="calendlyModal" onclick="closeCalendlyOnBg(event)">
@@ -723,16 +729,9 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:3.5rem 4
         <h4>Book a Discovery Call</h4>
         <p>We'd love to hear about your project. Book a free 30-minute discovery call and let's explore how we can help you build something remarkable.</p>
         <p style="margin-bottom:1.5rem;font-size:.82rem;color:var(--muted);">To integrate Calendly, replace this placeholder with your Calendly embed link below. Your link will look like:<br><code style="background:var(--border);padding:.2rem .5rem;font-size:.75rem;color:var(--gold);">https://calendly.com/your-username/discovery</code></p>
-        <!-- Replace the src below with your actual Calendly URL -->
         <a href="https://calendly.com" target="_blank" rel="noopener noreferrer">Open Calendly →</a>
         <p style="margin-top:2rem;font-size:.75rem;color:var(--muted);opacity:.7;">Or reach us directly at <span style="color:var(--gold)">Velorien@gmail.com</span></p>
       </div>
-      <!-- Uncomment and replace with your Calendly URL when ready:
-      <iframe 
-        src="https://calendly.com/your-username/discovery?embed_type=Inline&hide_event_type_details=1&hide_gdpr_banner=1&background_color=111009&text_color=ffffff&primary_color=e8c47a"
-        width="100%" height="700" frameborder="0" scrolling="yes">
-      </iframe>
-      -->
     </div>
   </div>
 </div>
@@ -753,11 +752,25 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:3.5rem 4
 window.addEventListener('load',()=>{
   setTimeout(()=>{
     document.getElementById('loader').classList.add('hidden');
-  }, 2200);
+  }, 3300);
 });
 
-/* ====== SCROLL HELPER ====== */
-function scrollTo(id){document.getElementById(id).scrollIntoView({behavior:'smooth'});}
+/* ====== SCROLL HELPER ======
+   FIX: Renamed from scrollTo() to scrollToSection() to avoid
+   shadowing the native window.scrollTo() method, which broke
+   the back-to-top button on both desktop and mobile.
+*/
+function scrollToSection(id){
+  document.getElementById(id).scrollIntoView({behavior:'smooth'});
+}
+
+/* ====== BACK TO TOP ======
+   FIX: Moved from inline onclick to addEventListener so it
+   calls the native window.scrollTo() without any name collision.
+*/
+document.getElementById('back-top').addEventListener('click', function(){
+  window.scrollTo({top:0, behavior:'smooth'});
+});
 
 /* ====== CURSOR (desktop only) ====== */
 const isTouch=window.matchMedia('(pointer: coarse)').matches;
@@ -789,7 +802,6 @@ if(!isTouch){
 const nav=document.getElementById('nav');
 window.addEventListener('scroll',()=>{
   nav.classList.toggle('scrolled',scrollY>50);
-  /* BACK TO TOP */
   document.getElementById('back-top').classList.toggle('visible',scrollY>400);
 },{passive:true});
 
@@ -807,8 +819,15 @@ function toggleMenu(){
 ham.addEventListener('click',toggleMenu);
 document.querySelectorAll('.ml').forEach(a=>a.addEventListener('click',()=>{if(menuOpen)toggleMenu();}));
 
-/* ====== SCROLL BUTTON ====== */
-document.getElementById('scrollBtn').addEventListener('click',()=>scrollTo('about'));
+/* ====== SCROLL BUTTON ======
+   FIX: Use addEventListener instead of inline onclick, and
+   scroll-hint now has z-index:20 + pointer-events:all in CSS,
+   while hero-veil has pointer-events:none so it no longer
+   intercepts taps on mobile.
+*/
+document.getElementById('scrollBtn').addEventListener('click', function(){
+  scrollToSection('about');
+});
 
 /* ====== PAGE TRANSITION on nav link clicks ====== */
 const overlay=document.getElementById('page-transition');
@@ -881,7 +900,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeCalendly();});
 /* ====== COOKIE BANNER ====== */
 function initCookie(){
   if(localStorage.getItem('velorien-cookie'))return;
-  setTimeout(()=>document.getElementById('cookie-banner').classList.add('show'),2800);
+  setTimeout(()=>document.getElementById('cookie-banner').classList.add('show'),4200);
 }
 function dismissCookie(accepted){
   localStorage.setItem('velorien-cookie',accepted?'accepted':'declined');
