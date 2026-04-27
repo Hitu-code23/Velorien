@@ -87,26 +87,6 @@ nav.scrolled{background:var(--nav-bg);backdrop-filter:blur(18px);-webkit-backdro
 .nav-cta:hover{background:var(--gold);color:var(--dark);}
 
 /* ====== MUSIC TOGGLE ====== */
-const musicToggle=document.getElementById('musicToggle');
-const audio=new Audio('https://cdn.pixabay.com/audio/2024/11/18/audio_b5da73d5d9.mp3');
-audio.loop=true;audio.volume=0.35;
-let musicPlaying=false;
-musicToggle.addEventListener('click',()=>{
-  if(musicPlaying){
-    audio.pause();
-    musicToggle.classList.remove('playing');
-    musicToggle.title='Play background music';
-  } else {
-    audio.play().catch(()=>{});
-    musicToggle.classList.add('playing');
-    musicToggle.title='Pause background music';
-  }
-  musicPlaying=!musicPlaying;
-});
-
-/* ====== DARK/LIGHT TOGGLE — removed ====== */
-
-/* ====== MUSIC TOGGLE ====== */
 .music-toggle{
   width:36px;height:36px;border:1px solid var(--border);background:transparent;cursor:pointer;
   display:flex;align-items:center;justify-content:center;
@@ -114,21 +94,18 @@ musicToggle.addEventListener('click',()=>{
   -webkit-tap-highlight-color:transparent;position:relative;
 }
 .music-toggle:hover{border-color:var(--gold);background:var(--gold-dim);}
-.music-toggle svg{width:16px;height:16px;transition:opacity .3s;}
-.music-toggle.playing{border-color:rgba(232,196,122,.5);}
-.music-toggle.playing svg{opacity:1;}
-/* Animated bars shown when playing */
-.music-bars{display:none;align-items:flex-end;gap:2px;height:14px;}
-.music-toggle.playing .music-bars{display:flex;}
-.music-toggle.playing .music-icon{display:none;}
-.music-bar{width:3px;background:var(--gold);border-radius:1px;animation:musicBar 1s ease infinite;}
-.music-bar:nth-child(1){height:6px;animation-delay:0s;}
-.music-bar:nth-child(2){height:12px;animation-delay:.2s;}
-.music-bar:nth-child(3){height:8px;animation-delay:.1s;}
-.music-bar:nth-child(4){height:10px;animation-delay:.3s;}
-@keyframes musicBar{
-  0%,100%{transform:scaleY(1);}
-  50%{transform:scaleY(.4);}
+.music-icon-svg{width:18px;height:18px;transition:opacity .3s;}
+.music-toggle.playing .music-icon-svg{opacity:1;}
+
+/* Rotating segment animation */
+@keyframes spin-segment{
+  from{transform:rotate(0deg);}
+  to{transform:rotate(360deg);}
+}
+.music-toggle.playing .music-icon-svg{
+  color:var(--gold);
+  animation:spin-segment 2s linear infinite;
+  transform-origin:center;
 }
 
 .hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px;-webkit-tap-highlight-color:transparent;}
@@ -157,7 +134,6 @@ musicToggle.addEventListener('click',()=>{
 #hero{position:relative;height:100vh;min-height:600px;display:flex;align-items:center;justify-content:center;overflow:hidden;}
 #bg-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.82;filter:saturate(.82);}
 .hero-veil{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(12,11,9,.3) 0%,rgba(12,11,9,.05) 50%,rgba(12,11,9,.75) 100%);
-  /* FIX: pointer-events:none so veil doesn't block scroll-hint clicks/taps */
   pointer-events:none;
 }
 [data-theme="light"] .hero-veil{background:linear-gradient(to bottom,rgba(245,240,232,.3) 0%,rgba(245,240,232,.05) 50%,rgba(245,240,232,.75) 100%);}
@@ -173,9 +149,8 @@ musicToggle.addEventListener('click',()=>{
 .cta:hover{color:var(--dark);letter-spacing:.22em;border-color:var(--gold);}
 .cta span{position:relative;z-index:1;}
 
-/* FIX: scroll-hint z-index raised above hero-veil so it receives touch/click events */
 .scroll-hint{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.6rem;opacity:0;animation:fadeIn 1.5s ease 1.6s forwards;background:none;border:none;cursor:pointer;color:inherit;font-family:'DM Sans',sans-serif;padding:.5rem 1rem;-webkit-tap-highlight-color:transparent;
-  z-index:20; /* was z-index:10, now above hero-veil */
+  z-index:20;
   pointer-events:all;
 }
 .scroll-hint p{font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);}
@@ -526,19 +501,9 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:3.5rem 4
   </ul>
   <div class="nav-right">
     <button class="music-toggle" id="musicToggle" aria-label="Toggle music" title="Toggle background music">
-      <span class="music-icon">
-        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M6 12.5V4.5L13 3V11" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="color:var(--muted)"/>
-          <circle cx="4.5" cy="12.5" r="1.5" stroke="currentColor" stroke-width="1" style="color:var(--muted)"/>
-          <circle cx="11.5" cy="11" r="1.5" stroke="currentColor" stroke-width="1" style="color:var(--muted)"/>
-        </svg>
-      </span>
-      <span class="music-bars">
-        <span class="music-bar"></span>
-        <span class="music-bar"></span>
-        <span class="music-bar"></span>
-        <span class="music-bar"></span>
-      </span>
+      <svg class="music-icon-svg" viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="26" cy="26" r="11" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="12 30" stroke-linecap="round" style="color:var(--muted)"/>
+      </svg>
     </button>
     <button class="nav-cta" onclick="scrollToSection('contact')">Start a project</button>
     <button class="hamburger" id="ham" aria-label="Open menu"><span></span><span></span><span></span></button>
@@ -767,7 +732,6 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:3.5rem 4
 </footer>
 
 <!-- ====== BACK TO TOP ====== -->
-<!-- FIX: use data attribute + JS handler instead of inline onclick to avoid scrollTo name conflict -->
 <button id="back-top" aria-label="Back to top">↑</button>
 
 <!-- ====== CALENDLY MODAL ====== -->
@@ -805,19 +769,12 @@ window.addEventListener('load',()=>{
   }, 3300);
 });
 
-/* ====== SCROLL HELPER ======
-   FIX: Renamed from scrollTo() to scrollToSection() to avoid
-   shadowing the native window.scrollTo() method, which broke
-   the back-to-top button on both desktop and mobile.
-*/
+/* ====== SCROLL HELPER ====== */
 function scrollToSection(id){
   document.getElementById(id).scrollIntoView({behavior:'smooth'});
 }
 
-/* ====== BACK TO TOP ======
-   FIX: Moved from inline onclick to addEventListener so it
-   calls the native window.scrollTo() without any name collision.
-*/
+/* ====== BACK TO TOP ====== */
 document.getElementById('back-top').addEventListener('click', function(){
   window.scrollTo({top:0, behavior:'smooth'});
 });
@@ -869,12 +826,7 @@ function toggleMenu(){
 ham.addEventListener('click',toggleMenu);
 document.querySelectorAll('.ml').forEach(a=>a.addEventListener('click',()=>{if(menuOpen)toggleMenu();}));
 
-/* ====== SCROLL BUTTON ======
-   FIX: Use addEventListener instead of inline onclick, and
-   scroll-hint now has z-index:20 + pointer-events:all in CSS,
-   while hero-veil has pointer-events:none so it no longer
-   intercepts taps on mobile.
-*/
+/* ====== SCROLL BUTTON ====== */
 document.getElementById('scrollBtn').addEventListener('click', function(){
   scrollToSection('about');
 });
