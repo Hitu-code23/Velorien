@@ -592,18 +592,18 @@ footer{padding:6rem 4rem 4rem;background:var(--bg);border-top:1px solid var(--bo
   </div>
 
   <div class="reveal-r">
-    <form id="cForm" class="fgroup" onsubmit="handleSubmit(event)">
+    <form id="cForm" class="fgroup" onsubmit="handleSubmit(event)" action="https://formspree.io/f/hitin.banga23@gmail.com" method="POST">
       <div class="frow">
-        <div class="ffield"><label>Your name</label><input type="text" placeholder="Alex Johnson" required></div>
-        <div class="ffield"><label>Email address</label><input type="email" placeholder="alex@company.com" required></div>
+        <div class="ffield"><label>Your name</label><input type="text" name="name" placeholder="Alex Johnson" required></div>
+        <div class="ffield"><label>Email address</label><input type="email" name="email" placeholder="alex@company.com" required></div>
       </div>
       <div class="ffield"><label>Service needed</label>
-        <select required><option value="" disabled selected>Select a service</option><option>Brand Identity</option><option>Digital Design</option><option>Creative Direction</option><option>Full Partnership</option><option>Other</option></select>
+        <select name="service" required><option value="" disabled selected>Select a service</option><option>Brand Identity</option><option>Digital Design</option><option>Creative Direction</option><option>Full Partnership</option><option>Other</option></select>
       </div>
       <div class="ffield"><label>Budget range</label>
-        <select><option value="" disabled selected>Approximate budget</option><option>₹25k – ₹50k</option><option>₹50k – ₹1.5L</option><option>₹1.5L – ₹3L</option><option>₹3L+</option></select>
+        <select name="budget"><option value="" disabled selected>Approximate budget</option><option>₹25k – ₹50k</option><option>₹50k – ₹1.5L</option><option>₹1.5L – ₹3L</option><option>₹3L+</option></select>
       </div>
-      <div class="ffield"><label>Tell us about your project</label><textarea placeholder="What are you building? What does success look like?" required></textarea></div>
+      <div class="ffield"><label>Tell us about your project</label><textarea name="message" placeholder="What are you building? What does success look like?" required></textarea></div>
       <button type="submit" class="sbtn">Send message →</button>
     </form>
     <div class="fsuccess" id="fSuccess"><h4>Message received ✦</h4><p>Thank you for reaching out. We'll be in touch within 24 hours.</p></div>
@@ -781,11 +781,25 @@ track.addEventListener('touchstart',e=>{tStart=e.changedTouches[0].clientX;},{pa
 track.addEventListener('touchend',e=>{const diff=tStart-e.changedTouches[0].clientX;if(Math.abs(diff)>40){goSlide(diff>0?Math.min(slide+1,2):Math.max(slide-1,0));}},{passive:true});
 
 /* ====== FORM ====== */
-function handleSubmit(e){
+async function handleSubmit(e){
   e.preventDefault();
-  document.getElementById('cForm').style.display='none';
-  const s=document.getElementById('fSuccess');s.style.display='block';s.style.opacity='0';s.style.transition='opacity .7s';
-  setTimeout(()=>s.style.opacity='1',20);
+  const form = e.target;
+  const data = new FormData(form);
+  const response = await fetch(form.action, {
+    method: form.method,
+    body: data,
+    headers: {
+        'Accept': 'application/json'
+    }
+  });
+  if (response.ok) {
+    form.style.display='none';
+    const s=document.getElementById('fSuccess');s.style.display='block';s.style.opacity='0';s.style.transition='opacity .7s';
+    setTimeout(()=>s.style.opacity='1',20);
+    form.reset();
+  } else {
+    alert("Oops! There was a problem submitting your form");
+  }
 }
 
 /* ====== MUSIC TOGGLE ====== */
