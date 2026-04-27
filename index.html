@@ -44,7 +44,7 @@ nav.scrolled{background:rgba(12,11,9,.88);backdrop-filter:blur(18px);padding:1re
 #hero{position:relative;height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;}
 #bg-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.82;filter:saturate(.82);}
 .hero-veil{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(12,11,9,.3) 0%,rgba(12,11,9,.05) 50%,rgba(12,11,9,.75) 100%);}
-#canvas{position:absolute;inset:0;pointer-events:none;transition:opacity .6s;}
+
 .hero-content{position:relative;z-index:5;text-align:center;display:flex;flex-direction:column;align-items:center;gap:1.6rem;}
 .eyebrow{font-size:.67rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);opacity:0;animation:fadeUp .9s var(--ease) .4s forwards;}
 .hero-h1{font-family:'Cormorant Garamond',serif;font-size:clamp(3.2rem,9vw,7.2rem);font-weight:300;line-height:1.02;letter-spacing:-.02em;opacity:0;animation:fadeUp .9s var(--ease) .6s forwards;}
@@ -254,7 +254,6 @@ footer{background:#080807;border-top:1px solid var(--border);padding:3.5rem 4rem
     <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260416_031918_443d301c-b6d9-4a18-b102-c946a16d86ad.mp4" type="video/mp4">
   </video>
   <div class="hero-veil"></div>
-  <canvas id="canvas"></canvas>
   <div class="hero-content">
     <span class="eyebrow">Creative Studio — Est. 2019</span>
     <h1 class="hero-h1">Where Ideas<br><em>Take Form</em></h1>
@@ -387,7 +386,6 @@ footer{background:#080807;border-top:1px solid var(--border);padding:3.5rem 4rem
   <div class="fcopy">© 2025 Forma Studio<br>All rights reserved</div>
 </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 /* CURSOR */
 const cur=document.getElementById('cur'),ring=document.getElementById('cur-ring');
@@ -416,26 +414,6 @@ function toggleMenu(){
 }
 ham.addEventListener('click',toggleMenu);
 document.querySelectorAll('.ml').forEach(a=>a.addEventListener('click',()=>{open=true;toggleMenu();}));
-
-/* THREE.JS */
-const canvas=document.getElementById('canvas');
-const R=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});
-R.setPixelRatio(Math.min(devicePixelRatio,2));R.setSize(innerWidth,innerHeight);
-const S=new THREE.Scene(),C=new THREE.PerspectiveCamera(42,innerWidth/innerHeight,.1,100);
-C.position.set(0,0,7);
-S.add(new THREE.AmbientLight(0xfff5e0,.8));
-const kl=new THREE.DirectionalLight(0xfff0d0,1.5);kl.position.set(6,10,6);S.add(kl);
-const fl=new THREE.DirectionalLight(0xc8d8ff,.4);fl.position.set(-6,-4,4);S.add(fl);
-const al=new THREE.PointLight(0xe8c47a,1.4,20);al.position.set(4,-3,5);S.add(al);
-const geo=new THREE.TorusKnotGeometry(1.05,.34,220,36,2,3);
-const mat=new THREE.MeshPhysicalMaterial({color:0xd4bfa0,metalness:.3,roughness:.15,clearcoat:.5,clearcoatRoughness:.08});
-const mesh=new THREE.Mesh(geo,mat);S.add(mesh);
-let mx=0,my=0,tx=0,ty=0,heroVis=true;
-document.addEventListener('mousemove',e=>{mx=(e.clientX/innerWidth-.5)*2;my=-(e.clientY/innerHeight-.5)*2;});
-window.addEventListener('resize',()=>{C.aspect=innerWidth/innerHeight;C.updateProjectionMatrix();R.setSize(innerWidth,innerHeight);});
-new IntersectionObserver(e=>{heroVis=e[0].isIntersecting;canvas.style.opacity=heroVis?'1':'0';},{threshold:.05}).observe(document.getElementById('hero'));
-const clk=new THREE.Clock();
-(function anim(){requestAnimationFrame(anim);if(!heroVis)return;const t=clk.getElapsedTime();mesh.rotation.x=t*.17;mesh.rotation.y=t*.24;tx+=(mx-tx)*.035;ty+=(my-ty)*.035;mesh.position.x=tx*.35;mesh.position.y=Math.sin(t*.55)*.13+ty*.18;C.position.x=tx*.1;C.position.y=ty*.08;C.lookAt(S.position);R.render(S,C);})();
 
 /* SCROLL REVEAL */
 const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');}),{threshold:.1});
