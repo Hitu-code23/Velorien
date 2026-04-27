@@ -261,12 +261,12 @@ section{padding:8rem 4rem;transition:var(--section-transition);}
 /* ====== CONTACT ====== */
 #contact{background:var(--bg2);display:grid;grid-template-columns:1fr 1.2fr;gap:8rem;align-items:start;}
 .cinfo h3{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:300;line-height:1.15;margin:2rem 0 1.5rem;}
-.cinfo p{color:var(--muted);line-height:1.8;font-size:.95rem;margin-bottom:3.5rem;font-weight:300;}
+.cinfo p{color:var(--muted);line-height:1.8;font-size:.95rem;margin-bottom:2.5rem;font-weight:300;}
 .cdetails{display:flex;flex-direction:column;gap:1.8rem;}
 .crow{display:flex;flex-direction:column;gap:.4rem;}
 .crow-label{font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);}
 .crow-val{font-size:1.05rem;color:var(--white);font-weight:300;}
-.calendly-wrap{margin-top:4rem;padding-top:3rem;border-top:1px solid var(--border);}
+.calendly-wrap{margin-top:3rem;padding-top:2.5rem;border-top:1px solid var(--border);}
 .calendly-label{font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:1.5rem;}
 .calendly-btn{display:inline-flex;align-items:center;gap:.8rem;padding:.9rem 2rem;background:var(--gold-dim);border:1px solid var(--gold);color:var(--gold);font-family:'DM Sans',sans-serif;font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;transition:all .3s;}
 .calendly-btn:hover{background:var(--gold);color:var(--dark);}
@@ -572,41 +572,41 @@ footer{padding:6rem 4rem 4rem;background:var(--bg);border-top:1px solid var(--bo
 
 <!-- ====== CONTACT ====== -->
 <section id="contact">
-  <div class="reveal"><p class="section-label">Get in touch</p><h2 class="section-title">Start a <em>project</em></h2></div>
-  <div class="contact-grid">
-    <div class="cinfo reveal-l">
-      <h3>Let's build something remarkable together.</h3>
-      <p>We take on a small number of projects each quarter to give every client our full attention. Tell us about your vision — we'd love to hear it.</p>
-      <div class="cdetails">
-        <div class="crow"><span class="crow-label">Email</span><span class="crow-val">Velorien@gmail.com</span></div>
-        <div class="crow"><span class="crow-label">Based in</span><span class="crow-val">Punjab · Remote-first</span></div>
-        <div class="crow"><span class="crow-label">Availability</span><span class="crow-val">Open for Q3 2025 projects</span></div>
-        <div class="crow"><span class="crow-label">Response</span><span class="crow-val">Within 24 hours</span></div>
-      </div>
-      <div class="calendly-wrap">
-        <div class="calendly-label">Prefer to talk first?</div>
-        <button class="calendly-btn" onclick="openCalendly()">
-          <span>◷</span> Book a 30-min discovery call
-        </button>
-      </div>
+  <div class="cinfo reveal-l">
+    <p class="section-label">Get in touch</p>
+    <h2 class="section-title">Start a <em>project</em></h2>
+    <h3>Let's build something remarkable together.</h3>
+    <p>We take on a small number of projects each quarter to give every client our full attention. Tell us about your vision — we'd love to hear it.</p>
+    
+    <div class="calendly-wrap">
+      <div class="calendly-label">Prefer to talk first?</div>
+      <button class="calendly-btn" onclick="openCalendly()">
+        <span>◷</span> Book a 30-min discovery call
+      </button>
     </div>
-    <div class="reveal-r">
-      <form id="cForm" class="fgroup" onsubmit="handleSubmit(event)">
-        <div class="frow">
-          <div class="ffield"><label>Your name</label><input type="text" placeholder="Alex Johnson" required></div>
-          <div class="ffield"><label>Email address</label><input type="email" placeholder="alex@company.com" required></div>
-        </div>
-        <div class="ffield"><label>Service needed</label>
-          <select required><option value="" disabled selected>Select a service</option><option>Brand Identity</option><option>Digital Design</option><option>Creative Direction</option><option>Full Partnership</option><option>Other</option></select>
-        </div>
-        <div class="ffield"><label>Budget range</label>
-          <select><option value="" disabled selected>Approximate budget</option><option>₹25k – ₹50k</option><option>₹50k – ₹1.5L</option><option>₹1.5L – ₹3L</option><option>₹3L+</option></select>
-        </div>
-        <div class="ffield"><label>Tell us about your project</label><textarea placeholder="What are you building? What does success look like?" required></textarea></div>
-        <button type="submit" class="sbtn">Send message →</button>
-      </form>
-      <div class="fsuccess" id="fSuccess"><h4>Message received ✦</h4><p>Thank you for reaching out. We'll be in touch within 24 hours.</p></div>
+
+    <div class="cdetails" style="margin-top: 3rem;">
+      <div class="crow"><span class="crow-label">Email</span><span class="crow-val">Velorien@gmail.com</span></div>
+      <div class="crow"><span class="crow-label">Based in</span><span class="crow-val">Punjab · Remote-first</span></div>
     </div>
+  </div>
+
+  <div class="reveal-r">
+    <form id="cForm" class="fgroup" onsubmit="handleSubmit(event)">
+      <div class="frow">
+        <div class="ffield"><label>Your name</label><input type="text" placeholder="Alex Johnson" required></div>
+        <div class="ffield"><label>Email address</label><input type="email" placeholder="alex@company.com" required></div>
+      </div>
+      <div class="ffield"><label>Service needed</label>
+        <select required><option value="" disabled selected>Select a service</option><option>Brand Identity</option><option>Digital Design</option><option>Creative Direction</option><option>Full Partnership</option><option>Other</option></select>
+      </div>
+      <div class="ffield"><label>Budget range</label>
+        <select><option value="" disabled selected>Approximate budget</option><option>₹25k – ₹50k</option><option>₹50k – ₹1.5L</option><option>₹1.5L – ₹3L</option><option>₹3L+</option></select>
+      </div>
+      <div class="ffield"><label>Tell us about your project</label><textarea placeholder="What are you building? What does success look like?" required></textarea></div>
+      <button type="submit" class="sbtn">Send message →</button>
+    </form>
+    <div class="fsuccess" id="fSuccess"><h4>Message received ✦</h4><p>Thank you for reaching out. We'll be in touch within 24 hours.</p></div>
   </div>
 </section>
 
