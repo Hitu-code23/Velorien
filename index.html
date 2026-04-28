@@ -271,6 +271,19 @@ section{padding:8rem 4rem;transition:var(--section-transition);}
 .pricing-note a{color:var(--gold);text-decoration:none;border-bottom:1px solid var(--gold-dim);transition:border-color .3s;}
 .pricing-note a:hover{border-color:var(--gold);}
 
+/* ====== PROGRESS BAR ====== */
+#progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: linear-gradient(to right, var(--gold), rgba(232, 196, 122, 0.3));
+  width: 0%;
+  z-index: 999;
+  transition: width 0.1s ease;
+  box-shadow: 0 0 10px rgba(232, 196, 122, 0.5);
+}
+
 /* ====== WORK ====== */
 #work{background:var(--bg);}
 .work-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:5rem;}
@@ -287,6 +300,30 @@ section{padding:8rem 4rem;transition:var(--section-transition);}
 .witem:hover .woverlay{opacity:1;}
 .wmeta span{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:.8rem;}
 .wmeta h4{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;color:#fff;}
+
+/* ====== WORK PREVIEW TOOLTIP ====== */
+.work-preview-tooltip {
+  position: fixed;
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.work-preview-tooltip.active {
+  opacity: 1;
+}
+.work-preview-tooltip img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 
 /* ====== PROCESS ====== */
 #process{background:var(--bg2);}
@@ -992,6 +1029,57 @@ scards.forEach(card => {
 
   card.addEventListener('mouseleave', () => {
     card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+  });
+});
+
+/* ====== SMOOTH PAGE PROGRESS BAR ====== */
+const progressBar = document.createElement('div');
+progressBar.id = 'progress-bar';
+document.body.prepend(progressBar);
+
+window.addEventListener('scroll', () => {
+  const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const scrolled = (window.scrollY / scrollHeight) * 100;
+  progressBar.style.width = scrolled + '%';
+});
+
+/* ====== INTERACTIVE WORK HOVER PREVIEWS ====== */
+const workItems = document.querySelectorAll('.witem');
+const previewTooltip = document.createElement('div');
+previewTooltip.className = 'work-preview-tooltip';
+previewTooltip.style.width = '280px';
+previewTooltip.style.height = '180px';
+document.body.appendChild(previewTooltip);
+
+const workData = [
+  { title: 'Aura — Skincare Brand', color: '#e8c47a' },
+  { title: 'Meridian — SaaS Platform', color: '#e8c47a' },
+  { title: 'Grove — F&B Concept', color: '#e8c47a' },
+  { title: 'Lune — Luxury Hotel', color: '#e8c47a' }
+];
+
+workItems.forEach((item, index) => {
+  item.addEventListener('mouseenter', () => {
+    // Create a gradient preview based on the project
+    const gradients = [
+      'linear-gradient(135deg, #e8c47a 0%, #a07020 100%)',
+      'linear-gradient(135deg, #6366f1 0%, #3b82f6 100%)',
+      'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+      'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)'
+    ];
+    previewTooltip.style.background = gradients[index % gradients.length];
+    previewTooltip.classList.add('active');
+  });
+
+  item.addEventListener('mousemove', (e) => {
+    const x = e.clientX + 15;
+    const y = e.clientY + 15;
+    previewTooltip.style.left = x + 'px';
+    previewTooltip.style.top = y + 'px';
+  });
+
+  item.addEventListener('mouseleave', () => {
+    previewTooltip.classList.remove('active');
   });
 });
 </script>
