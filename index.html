@@ -135,6 +135,16 @@ nav.scrolled{background:var(--nav-bg);backdrop-filter:blur(18px);-webkit-backdro
 .reveal.on,.reveal-l.on,.reveal-r.on{opacity:1;transform:none;}
 
 
+/* ====== LOGO MARQUEE ====== */
+.marquee-section { padding: 4rem 0; background: var(--bg); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); overflow: hidden; }
+.marquee-title { text-align: center; font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 2.5rem; opacity: 0.7; }
+.marquee-container { display: flex; width: 200%; animation: scrollMarquee 30s linear infinite; }
+.marquee-container:hover { animation-play-state: paused; }
+.marquee-content { display: flex; justify-content: space-around; width: 50%; align-items: center; gap: 4rem; padding-right: 4rem; }
+.marquee-content span { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 300; color: var(--text); opacity: 0.35; filter: grayscale(1); transition: opacity 0.3s, filter 0.3s; white-space: nowrap; }
+.marquee-content span:hover { opacity: 1; filter: grayscale(0); color: var(--gold); }
+@keyframes scrollMarquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
 /* ====== FAQ ACCORDION ====== */
 #faq { background: var(--bg); }
 .faq-container { max-width: 800px; margin: 4rem auto 0; display: flex; flex-direction: column; gap: 1rem; }
@@ -444,6 +454,29 @@ footer{padding:6rem 4rem 4rem;background:var(--bg);border-top:1px solid var(--bo
     <p>Scroll</p>
     <div class="scroll-line"></div>
   </button>
+</section>
+
+<!-- ====== LOGO MARQUEE ====== -->
+<section class="marquee-section reveal">
+  <p class="marquee-title">Trusted by industry leaders</p>
+  <div class="marquee-container">
+    <div class="marquee-content">
+      <span>AURA SKINCARE</span>
+      <span>MERIDIAN TECH</span>
+      <span>LUNE HOTELS</span>
+      <span>GROVE F&B</span>
+      <span>SOLACE ARCHITECTURE</span>
+      <span>VANTAGE VENTURES</span>
+    </div>
+    <div class="marquee-content">
+      <span>AURA SKINCARE</span>
+      <span>MERIDIAN TECH</span>
+      <span>LUNE HOTELS</span>
+      <span>GROVE F&B</span>
+      <span>SOLACE ARCHITECTURE</span>
+      <span>VANTAGE VENTURES</span>
+    </div>
+  </div>
 </section>
 
 <!-- ====== ABOUT ====== -->
