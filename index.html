@@ -138,9 +138,9 @@ nav.scrolled{background:var(--nav-bg);backdrop-filter:blur(18px);-webkit-backdro
 /* ====== LOGO MARQUEE ====== */
 .marquee-section { padding: 4rem 0; background: var(--bg); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); overflow: hidden; }
 .marquee-title { text-align: center; font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 2.5rem; opacity: 0.7; }
-.marquee-container { display: flex; width: 200%; animation: scrollMarquee 30s linear infinite; }
+.marquee-container { display: flex; width: max-content; animation: scrollMarquee 40s linear infinite; }
 .marquee-container:hover { animation-play-state: paused; }
-.marquee-content { display: flex; justify-content: space-around; width: 50%; align-items: center; gap: 4rem; padding-right: 4rem; }
+.marquee-content { display: flex; align-items: center; gap: 6rem; padding-right: 6rem; flex-shrink: 0; }
 .marquee-content span { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 300; color: var(--text); opacity: 0.35; filter: grayscale(1); transition: opacity 0.3s, filter 0.3s; white-space: nowrap; }
 .marquee-content span:hover { opacity: 1; filter: grayscale(0); color: var(--gold); }
 @keyframes scrollMarquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
