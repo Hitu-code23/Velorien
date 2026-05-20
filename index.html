@@ -290,10 +290,10 @@ section{padding:8rem 4rem;transition:var(--section-transition);}
 .wmeta h4{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;color:#fff;margin-top:.5rem;}
 
 /* ====== CASE STUDY MODAL ====== */
-.case-study-modal{position:fixed;inset:0;background:rgba(12,11,9,.95);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:3000;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:all .5s var(--ease);padding:2rem;}
-.case-study-modal.open{opacity:1;visibility:visible;}
+.case-study-modal{position:fixed;inset:0;background:rgba(12,11,9,.95);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:3000;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;pointer-events:none;transition:all .5s var(--ease);padding:2rem;}
+.case-study-modal.open{opacity:1;visibility:visible;pointer-events:all;}
 .case-study-inner{width:100%;max-width:900px;max-height:90vh;background:var(--bg);position:relative;border:1px solid var(--border);overflow-y:auto;border-radius:8px;}
-.case-study-close{position:absolute;top:1.5rem;right:1.5rem;background:none;border:none;color:var(--muted);font-size:1.5rem;cursor:pointer;z-index:10;transition:color .3s;}
+.case-study-close{position:absolute;top:1.5rem;right:1.5rem;background:none;border:none;color:var(--muted);font-size:1.5rem;cursor:pointer;z-index:3001;transition:color .3s;}
 .case-study-close:hover{color:var(--gold);}
 .case-study-content{padding:3rem;}
 .case-study-header{margin-bottom:3rem;border-bottom:1px solid var(--border);padding-bottom:2rem;}
