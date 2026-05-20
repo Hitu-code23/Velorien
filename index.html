@@ -278,13 +278,15 @@ section{padding:8rem 4rem;transition:var(--section-transition);}
 .witem{position:relative;aspect-ratio:1;overflow:hidden;border:1px solid var(--border);cursor:pointer;text-decoration:none;transition:all .4s var(--ease);}
 .witem:hover{border-color:var(--gold);}
 .wbg{position:absolute;inset:0;background:linear-gradient(135deg,rgba(232,196,122,.1),rgba(232,196,122,.05));display:flex;align-items:center;justify-content:center;}
-.wnum{font-family:'Cormorant Garamond',serif;font-size:4rem;color:var(--gold-dim);font-weight:300;position:absolute;top:2rem;left:2rem;}
-.wshape{position:absolute;width:80px;height:80px;opacity:.3;}
+.wvideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s var(--ease);}
+.witem:hover .wvideo{opacity:1;}
+.wnum{font-family:'Cormorant Garamond',serif;font-size:4rem;color:var(--gold-dim);font-weight:300;position:absolute;top:2rem;left:2rem;z-index:2;}
+.wshape{position:absolute;width:80px;height:80px;opacity:.3;z-index:2;}
 .play-button-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0);transition:background .3s;opacity:0;z-index:10;}
 .witem:hover .play-button-overlay{background:rgba(0,0,0,.4);opacity:1;}
 .play-button{width:60px;height:60px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--dark);font-size:24px;transition:transform .3s;}
 .play-button-overlay:hover .play-button{transform:scale(1.1);}
-.woverlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(12,11,9,.9),transparent);display:flex;align-items:flex-end;padding:2rem;}
+.woverlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(12,11,9,.9),transparent);display:flex;align-items:flex-end;padding:2rem;z-index:3;}
 .wmeta{width:100%;}
 .wmeta span{font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);opacity:.8;}
 .wmeta h4{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;color:#fff;margin-top:.5rem;}
@@ -441,10 +443,13 @@ footer{padding:6rem 4rem 4rem;background:var(--bg);border-top:1px solid var(--bo
   .hero-h1{font-size:4rem;}
   .services-grid,.pricing-grid,.work-grid,.process-grid{grid-template-columns:1fr;}
   .frow{grid-template-columns:1fr;}
-  #contact{gap:3rem;}
-  .calendly-inner{height:85vh;}
-  .calc-options{grid-template-columns:1fr;}
+  .stats{grid-template-columns:1fr;}
+  .about-cards{grid-template-columns:1fr;}
+  .case-study-results{grid-template-columns:1fr;}
+  .t-quote{font-size:1.8rem;}
+  #contact{grid-template-columns:1fr;}
   #map-container{height:300px;}
+  footer{padding:4rem 2rem;}
 }
 </style>
 </head>
@@ -517,8 +522,6 @@ footer{padding:6rem 4rem 4rem;background:var(--bg);border-top:1px solid var(--bo
 
 <!-- ====== PROGRESS BAR ====== -->
 <div id="progress-bar"></div>
-
-
 
 <!-- ====== CASE STUDY MODAL ====== -->
 <div class="case-study-modal" id="caseStudyModal">
@@ -707,6 +710,9 @@ footer{padding:6rem 4rem 4rem;background:var(--bg);border-top:1px solid var(--bo
         <div class="wnum">01</div>
         <svg class="wshape" viewBox="0 0 70 70"><circle cx="35" cy="35" r="30" fill="none" stroke="rgba(232,196,122,.8)" stroke-width="1"/><circle cx="35" cy="35" r="16" fill="none" stroke="rgba(232,196,122,.5)" stroke-width="1"/></svg>
       </div>
+      <video class="wvideo" autoplay muted loop playsinline>
+        <source src="https://videos.pexels.com/video-files/3045163/3045163-sd_640_360_25fps.mp4" type="video/mp4">
+      </video>
       <div class="play-button-overlay">
         <div class="play-button">▶</div>
       </div>
@@ -722,6 +728,9 @@ footer{padding:6rem 4rem 4rem;background:var(--bg);border-top:1px solid var(--bo
         <div class="wnum">02</div>
         <svg class="wshape" viewBox="0 0 70 70"><rect x="14" y="14" width="42" height="42" fill="none" stroke="rgba(232,196,122,.8)" stroke-width="1" transform="rotate(18 35 35)"/></svg>
       </div>
+      <video class="wvideo" autoplay muted loop playsinline>
+        <source src="https://videos.pexels.com/video-files/1448735/1448735-sd_640_360_25fps.mp4" type="video/mp4">
+      </video>
       <div class="play-button-overlay">
         <div class="play-button">▶</div>
       </div>
@@ -737,6 +746,9 @@ footer{padding:6rem 4rem 4rem;background:var(--bg);border-top:1px solid var(--bo
         <div class="wnum">03</div>
         <svg class="wshape" viewBox="0 0 70 70"><polygon points="35,8 62,62 8,62" fill="none" stroke="rgba(232,196,122,.8)" stroke-width="1"/></svg>
       </div>
+      <video class="wvideo" autoplay muted loop playsinline>
+        <source src="https://videos.pexels.com/video-files/3408348/3408348-sd_640_360_25fps.mp4" type="video/mp4">
+      </video>
       <div class="play-button-overlay">
         <div class="play-button">▶</div>
       </div>
@@ -760,90 +772,66 @@ footer{padding:6rem 4rem 4rem;background:var(--bg);border-top:1px solid var(--bo
     <div class="pstep reveal"><div class="pstep-num">01</div><h4>Discovery</h4><p>Deep-dive into your brand, goals, audience, and competitive landscape. We ask the hard questions first so the answers inform everything.</p><div class="pbar"></div></div>
     <div class="pstep reveal" style="transition-delay:.1s"><div class="pstep-num">02</div><h4>Strategy</h4><p>A clear creative strategy and visual direction rooted in real insight. This becomes the north star for every decision that follows.</p><div class="pbar"></div></div>
     <div class="pstep reveal" style="transition-delay:.15s"><div class="pstep-num">03</div><h4>Design</h4><p>Iterative design with close collaboration and fast feedback cycles. We move with urgency — not haste.</p><div class="pbar"></div></div>
-    <div class="pstep reveal" style="transition-delay:.2s"><div class="pstep-num">04</div><h4>Launch</h4><p>Precise handoff, development support, and post-launch refinement. We don't disappear at the finish line.</p><div class="pbar"></div></div>
+    <div class="pstep reveal" style="transition-delay:.2s"><div class="pstep-num">04</div><h4>Launch</h4><p>Precision handoff and support through launch. We ensure everything translates perfectly from concept to reality.</p><div class="pbar"></div></div>
   </div>
 </section>
 
 <!-- ====== TESTIMONIALS ====== -->
 <section id="testimonials">
-  <div class="t-header reveal"><p class="section-label">Client voices</p><h2 class="section-title">What they <em>say</em></h2></div>
+  <div class="t-header reveal">
+    <p class="section-label">What clients say</p>
+    <h2 class="section-title">Trusted by <em>visionary</em> founders</h2>
+  </div>
   <div class="t-track" id="tTrack">
-    <div class="t-slide"><p class="t-quote">"Velorien didn't just design our brand — they uncovered it. The work speaks for itself, but the process was just as extraordinary."</p><div class="t-author">Sarah Okafor</div><div class="t-role">Founder, Aura Skincare</div></div>
-    <div class="t-slide"><p class="t-quote">"Working with Velorien changed how I think about design entirely. They pushed us to be braver, and the results exceeded every expectation."</p><div class="t-author">James Whitfield</div><div class="t-role">CEO, Meridian Technologies</div></div>
-    <div class="t-slide"><p class="t-quote">"Every detail was considered. From typography to motion — it's craftsmanship in the truest sense of the word."</p><div class="t-author">Mia Chen</div><div class="t-role">Creative Director, Lune Hotels</div></div>
-  </div>
-  <p class="t-swipe-hint">← swipe to navigate →</p>
-  <div class="t-dots" id="tDots">
-    <button class="dot active" onclick="goSlide(0)" aria-label="Slide 1"></button>
-    <button class="dot" onclick="goSlide(1)" aria-label="Slide 2"></button>
-    <button class="dot" onclick="goSlide(2)" aria-label="Slide 3"></button>
-  </div>
-</section>
-
-<!-- ====== FAQ ====== -->
-<section id="faq">
-  <div class="reveal">
-    <p class="section-label">Questions</p>
-    <h2 class="section-title">Common <em>inquiries</em></h2>
-  </div>
-  <div class="faq-container reveal" style="transition-delay: .2s">
-    <div class="faq-item">
-      <div class="faq-question">
-        <h4>What is your typical project timeline?</h4>
-        <div class="faq-icon"></div>
-      </div>
-      <div class="faq-answer">
-        <p>A typical brand identity engagement spans 4-6 weeks, while comprehensive digital ecosystems may require 8-12 weeks. This timeline ensures we have the necessary space for deep research, strategic iteration, and meticulous execution of every brand touchpoint.</p>
-      </div>
+    <div class="t-slide">
+      <p class="t-quote">"Velorien transformed our brand from invisible to unforgettable. Their strategic approach and attention to detail is unmatched."</p>
+      <p class="t-author">Sarah Chen</p>
+      <p class="t-role">Founder, Aura Skincare</p>
     </div>
-    <div class="faq-item">
-      <div class="faq-question">
-        <h4>Do you work with international clients?</h4>
-        <div class="faq-icon"></div>
-      </div>
-      <div class="faq-answer">
-        <p>Absolutely. Operating as a remote-first studio, we have successfully partnered with clients across Europe, North America, and Asia. We utilize high-efficiency asynchronous workflows and dedicated communication channels to ensure project momentum remains consistent, regardless of geographical boundaries.</p>
-      </div>
+    <div class="t-slide">
+      <p class="t-quote">"Working with Velorien felt like partnering with an extension of our team. They understood our vision instantly and executed flawlessly."</p>
+      <p class="t-author">Rajesh Patel</p>
+      <p class="t-role">CEO, Meridian Tech</p>
     </div>
-    <div class="faq-item">
-      <div class="faq-question">
-        <h4>What is included in a 'Creative Direction' engagement?</h4>
-        <div class="faq-icon"></div>
-      </div>
-      <div class="faq-answer">
-        <p>Creative Direction involves overseeing the holistic visual and narrative integrity of your brand. This encompasses high-level strategy, art direction for media production, and the curation of a consistent aesthetic language across all platforms to ensure your brand resonates with its intended audience.</p>
-      </div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-question">
-        <h4>How do you handle revisions?</h4>
-        <div class="faq-icon"></div>
-      </div>
-      <div class="faq-answer">
-        <p>Collaboration is at the core of our philosophy. Each project phase includes dedicated refinement cycles (typically 2-3 rounds) to ensure alignment. By establishing a solid strategic foundation at the outset, we ensure that the creative execution is both purposeful and precise.</p>
-      </div>
+    <div class="t-slide">
+      <p class="t-quote">"The level of craft and intention in every detail is remarkable. They don't just design—they build experiences that matter."</p>
+      <p class="t-author">Emma Rodriguez</p>
+      <p class="t-role">Creative Director, Lune Hotels</p>
     </div>
   </div>
+  <div class="t-dots">
+    <button class="dot active" onclick="goSlide(0)"></button>
+    <button class="dot" onclick="goSlide(1)"></button>
+    <button class="dot" onclick="goSlide(2)"></button>
+  </div>
+  <p class="t-swipe-hint">Swipe to explore</p>
 </section>
 
 <!-- ====== CONTACT ====== -->
 <section id="contact">
-  <div class="cinfo reveal-l">
+  <div class="reveal-l">
     <p class="section-label">Get in touch</p>
-    <h2 class="section-title">Start a <em>project</em></h2>
-    <h3>Let's build something remarkable together.</h3>
-    <p>We take on a small number of projects each quarter to give every client our full attention. Tell us about your vision — we'd love to hear it.</p>
-    
-    <div class="calendly-wrap">
-      <div class="calendly-label">Prefer to talk first?</div>
-      <button class="calendly-btn" onclick="openCalendly()">
-        <span>◷</span> Book a 30-min discovery call
-      </button>
+    <div class="cinfo">
+      <h3>Let's create something remarkable together</h3>
+      <p>Whether you're launching a brand, building a product, or planning a campaign — we'd love to hear about your vision and explore how we can help bring it to life.</p>
     </div>
-
-    <div class="cdetails" style="margin-top: 3rem;">
-      <div class="crow"><span class="crow-label">Email</span><span class="crow-val">Velorien@gmail.com</span></div>
-      <div class="crow"><span class="crow-label">Based in</span><span class="crow-val">Punjab · Remote-first</span></div>
+    <div class="cdetails">
+      <div class="crow">
+        <span class="crow-label">Email</span>
+        <span class="crow-val"><a href="mailto:hitin.banga23@gmail.com" style="color:inherit;text-decoration:none;">hitin.banga23@gmail.com</a></span>
+      </div>
+      <div class="crow">
+        <span class="crow-label">Location</span>
+        <span class="crow-val">Punjab, India · Remote-first</span>
+      </div>
+      <div class="crow">
+        <span class="crow-label">Response Time</span>
+        <span class="crow-val">Within 24 hours</span>
+      </div>
+    </div>
+    <div class="calendly-wrap">
+      <p class="calendly-label">Schedule a call</p>
+      <button class="calendly-btn" onclick="openCalendly()"><span>📅</span> Book on Calendly</button>
     </div>
   </div>
 
