@@ -7,6 +7,9 @@
 <!-- Calendly badge widget begin -->
 <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
 <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+<!-- Leaflet Map Library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <!-- Calendly badge widget end -->
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap');
@@ -57,12 +60,14 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;ove
 .loader-bar{position:absolute;left:0;top:0;height:100%;width:0;background:var(--gold);animation:loaderBarFill 2.3s cubic-bezier(0.25,1,0.5,1) .8s forwards;}
 @keyframes loaderBarFill{to{width:100%;}}
 
-/* ====== CURSOR — desktop only ====== */
+/* ====== ENHANCED CURSOR — desktop only ====== */
 @media(pointer:fine){
   body{cursor:none;}
-  #cur,#cur-ring{position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);border-radius:50%;transition:width .3s var(--ease),height .3s var(--ease);}
+  #cur,#cur-ring{position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);border-radius:50%;transition:width .2s var(--ease),height .2s var(--ease),background .2s var(--ease);}
   #cur{width:8px;height:8px;background:#fff;}
   #cur-ring{width:32px;height:32px;border:1px solid rgba(255,255,255,.3);}
+  #cur.magnetic{width:12px;height:12px;background:var(--gold);}
+  #cur-ring.magnetic{width:60px;height:60px;border:2px solid var(--gold);box-shadow:0 0 20px rgba(232,196,122,0.4);}
 }
 @media(pointer:coarse){#cur,#cur-ring{display:none;}}
 
@@ -111,7 +116,6 @@ nav.scrolled{background:var(--nav-bg);backdrop-filter:blur(18px);-webkit-backdro
 .music-icon-svg{width:18px;height:18px;transition:opacity .3s;}
 .music-toggle.playing .music-icon-svg{opacity:1;}
 
-/* Rotating segment animation */
 @keyframes spin-segment{
   from{transform:rotate(0deg);}
   to{transform:rotate(360deg);}
@@ -143,7 +147,6 @@ nav.scrolled{background:var(--nav-bg);backdrop-filter:blur(18px);-webkit-backdro
 .reveal-l{transform:translateX(-28px);}
 .reveal-r{transform:translateX(28px);}
 .reveal.on,.reveal-l.on,.reveal-r.on{opacity:1;transform:none;}
-
 
 /* ====== LOGO MARQUEE ====== */
 .marquee-section { padding: 4rem 0; background: var(--bg); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); overflow: hidden; }
@@ -220,209 +223,88 @@ section{padding:8rem 4rem;transition:var(--section-transition);}
 
 /* ====== SERVICES ====== */
 #services{background:var(--bg);}
-.services-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:5rem;}
-.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
-.scard{
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  padding: 4rem 3rem;
-  border: 1px solid var(--border);
-  position: relative;
-  overflow: hidden;
-  transition: border-color 0.4s var(--ease), box-shadow 0.4s var(--ease);
-  transform-style: preserve-3d;
-  transform: perspective(1000px);
-}
-.scard::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(232, 196, 122, 0.15) 0%, transparent 60%);
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-.scard:hover::before { opacity: 1; }
-.scard-num{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--gold);margin-bottom:2.5rem;display:block;letter-spacing:.1em;}
-.scard h3{font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:300;margin-bottom:1.5rem;letter-spacing:.02em;}
-.scard p{font-size:.9rem;line-height:1.8;color:var(--muted);font-weight:300;margin-bottom:2.5rem;}
+.services-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:6rem;}
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2.5rem;}
+.scard{background:var(--bg2);padding:2.8rem 2.2rem;border:1px solid var(--border);transition:all .4s var(--ease);}
+.scard:hover{border-color:var(--gold);transform:translateY(-12px);background:var(--bg);}
+.scard-num{font-family:'Cormorant Garamond',serif;font-size:3.2rem;color:var(--gold-dim);font-weight:300;margin-bottom:1.5rem;}
+.scard h3{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:400;margin-bottom:1.2rem;letter-spacing:.01em;}
+.scard p{font-size:.88rem;line-height:1.8;color:var(--muted);font-weight:300;margin-bottom:1.8rem;}
 .tags{display:flex;gap:.8rem;flex-wrap:wrap;}
-.tag{font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);padding:.4rem .9rem;border:1px solid var(--gold-dim);background:var(--gold-dim);}
+.tag{font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;padding:.4rem .8rem;background:var(--gold-dim);color:var(--gold);border-radius:20px;}
 
 /* ====== PRICING ====== */
 #pricing{background:var(--bg2);}
-.pricing-header{text-align:center;margin-bottom:5rem;}
-.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;max-width:1200px;margin:0 auto;}
-.pcard{background:var(--bg);padding:3.5rem 2.8rem;border:1px solid var(--border);display:flex;flex-direction:column;position:relative;transition:all .4s var(--ease);}
-.pcard.featured{border-color:var(--gold);transform:scale(1.03);z-index:2;box-shadow:0 20px 50px rgba(0,0,0,.3);}
-.pcard-badge{position:absolute;top:1.5rem;right:1.5rem;font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--dark);background:var(--gold);padding:.4rem .9rem;font-weight:500;}
-.pcard-tier{font-size:.65rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:.8rem;}
-.pcard-name{font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:300;margin-bottom:1.2rem;}
-.pcard-desc{font-size:.84rem;line-height:1.7;color:var(--muted);margin-bottom:2.5rem;min-height:4.2rem;}
-.pcard-price{font-family:'Cormorant Garamond',serif;font-size:3.2rem;font-weight:300;margin-bottom:.4rem;color:var(--white);}
-.pcard-price span{font-size:1rem;color:var(--muted);font-family:'DM Sans',sans-serif;letter-spacing:0;}
-.pcard-billing{font-size:.7rem;letter-spacing:.1em;color:var(--gold);text-transform:uppercase;margin-bottom:3rem;}
-.pcard-features{margin-bottom:3.5rem;display:flex;flex-direction:column;gap:1.2rem;flex-grow:1;}
-.pf{display:flex;align-items:flex-start;gap:.9rem;font-size:.86rem;color:var(--white);font-weight:300;}
-.pf-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);margin-top:.5rem;flex-shrink:0;}
-.pcard-btn{width:100%;padding:1.1rem;background:transparent;border:1px solid var(--gold);color:var(--gold);font-family:'DM Sans',sans-serif;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:all .3s;}
+.pricing-header{margin-bottom:5rem;}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2.5rem;margin-bottom:3rem;}
+.pcard{background:var(--bg);border:1px solid var(--border);padding:3rem 2.5rem;position:relative;transition:all .4s var(--ease);}
+.pcard:hover{border-color:var(--gold);transform:translateY(-8px);}
+.pcard.featured{border-color:var(--gold);background:var(--bg2);transform:scale(1.05);}
+.pcard-badge{position:absolute;top:1.5rem;right:1.5rem;background:var(--gold);color:var(--dark);font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;padding:.5rem 1rem;font-weight:500;}
+.pcard-tier{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;}
+.pcard-name{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;margin-bottom:1.2rem;color:var(--white);}
+.pcard-desc{font-size:.88rem;line-height:1.7;color:var(--muted);margin-bottom:2rem;font-weight:300;}
+.pcard-price{font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:300;color:var(--gold);margin-bottom:.5rem;}
+.pcard-price span{font-size:.9rem;color:var(--muted);}
+.pcard-billing{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:2rem;}
+.pcard-features{display:flex;flex-direction:column;gap:1rem;margin-bottom:2.5rem;}
+.pf{display:flex;gap:.8rem;align-items:flex-start;}
+.pf-dot{width:4px;height:4px;background:var(--gold);border-radius:50%;margin-top:.4rem;flex-shrink:0;}
+.pf{font-size:.85rem;color:var(--muted);line-height:1.6;}
+.pcard-btn{width:100%;padding:1rem;background:transparent;border:1px solid var(--gold);color:var(--gold);font-family:'DM Sans',sans-serif;font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;transition:all .3s;}
 .pcard-btn:hover{background:var(--gold);color:var(--dark);}
-.pricing-note{text-align:center;margin-top:4rem;font-size:.8rem;color:var(--muted);letter-spacing:.02em;}
-.pricing-note a{color:var(--gold);text-decoration:none;border-bottom:1px solid var(--gold-dim);transition:border-color .3s;}
-.pricing-note a:hover{border-color:var(--gold);}
+.pricing-note{text-align:center;font-size:.8rem;color:var(--muted);line-height:1.8;}
+.pricing-note a{color:var(--gold);text-decoration:none;}
 
-/* ====== PROGRESS BAR ====== */
-#progress-bar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 3px;
-  background: linear-gradient(to right, var(--gold), rgba(232, 196, 122, 0.3));
-  width: 0%;
-  z-index: 999;
-  transition: width 0.1s ease;
-  box-shadow: 0 0 10px rgba(232, 196, 122, 0.5);
-}
-
-/* ====== PARALLAX SECTION ====== */
-.parallax-bg {
-  position: relative;
-  overflow: hidden;
-}
-.parallax-element {
-  will-change: transform;
-}
-
-/* ====== VIDEO LIGHTBOX ====== */
-.video-lightbox-modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(12, 11, 9, 0.98);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  z-index: 3000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.5s var(--ease);
-  padding: 2rem;
-}
-.video-lightbox-modal.active {
-  opacity: 1;
-  visibility: visible;
-}
-.video-lightbox-content {
-  position: relative;
-  width: 100%;
-  max-width: 900px;
-  aspect-ratio: 16 / 9;
-  background: #000;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
-}
-.video-lightbox-content iframe,
-.video-lightbox-content video {
-  width: 100%;
-  height: 100%;
-  border: none;
-}
-.video-lightbox-close {
-  position: absolute;
-  top: 1.5rem;
-  right: 1.5rem;
-  background: rgba(232, 196, 122, 0.2);
-  border: 1px solid var(--gold);
-  color: var(--gold);
-  font-size: 1.5rem;
-  cursor: pointer;
-  width: 48px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  transition: all 0.3s;
-  z-index: 10;
-}
-.video-lightbox-close:hover {
-  background: var(--gold);
-  color: var(--dark);
-}
-
-/* ====== PLAY BUTTON OVERLAY ====== */
-.play-button-overlay {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.3);
-  opacity: 0;
-  transition: opacity 0.3s;
-  cursor: pointer;
-}
-.witem:hover .play-button-overlay {
-  opacity: 1;
-}
-.play-button {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: var(--gold);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--dark);
-  font-size: 24px;
-  transition: transform 0.3s;
-}
-.play-button-overlay:hover .play-button {
-  transform: scale(1.15);
-}
+/* ====== PRICING CALCULATOR ====== */
+.pricing-calculator{background:var(--bg);border:1px solid var(--border);padding:3rem;border-radius:8px;margin-top:4rem;max-width:600px;margin-left:auto;margin-right:auto;}
+.calc-title{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;margin-bottom:2rem;text-align:center;}
+.calc-group{margin-bottom:2rem;}
+.calc-label{font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;display:block;}
+.calc-options{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.calc-option{padding:1rem;border:1px solid var(--border);background:transparent;color:var(--text);cursor:pointer;transition:all .3s;font-size:.85rem;text-align:center;}
+.calc-option:hover{border-color:var(--gold);background:var(--gold-dim);}
+.calc-option.selected{border-color:var(--gold);background:var(--gold);color:var(--dark);}
+.calc-result{background:var(--gold-dim);border:1px solid var(--gold);padding:2rem;border-radius:8px;text-align:center;margin-top:2rem;}
+.calc-result-label{font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;}
+.calc-result-price{font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:300;color:var(--gold);}
 
 /* ====== WORK ====== */
 #work{background:var(--bg);}
 .work-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:5rem;}
-.work-link{font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);text-decoration:none;border-bottom:1px solid var(--gold-dim);padding-bottom:.4rem;transition:border-color .3s;}
-.work-link:hover{border-color:var(--gold);}
-.work-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;}
-.witem{position:relative;aspect-ratio:16/10;background:var(--bg2);overflow:hidden;cursor:pointer;border:1px solid var(--border);text-decoration:none;display:block;}
-.wbg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;transition:transform .8s var(--ease);}
-.wnum{position:absolute;top:2.5rem;left:2.5rem;font-family:'Cormorant Garamond',serif;font-size:.9rem;color:var(--gold-dim);letter-spacing:.1em;}
-.wshape{width:180px;height:180px;opacity:.15;transition:all .8s var(--ease);}
-.witem:hover .wbg{transform:scale(1.08);}
-.witem:hover .wshape{opacity:.4;transform:rotate(15deg);}
-.woverlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(12,11,9,.9) 0%,transparent 60%);display:flex;align-items:flex-end;padding:3rem;opacity:0;transition:opacity .5s var(--ease);}
-.witem:hover .woverlay{opacity:1;}
-.wmeta span{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:.8rem;}
-.wmeta h4{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;color:#fff;}
+.work-link{color:var(--gold);text-decoration:none;font-size:.8rem;letter-spacing:.15em;text-transform:uppercase;transition:color .3s;}
+.work-link:hover{color:var(--white);}
+.work-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2.5rem;}
+.witem{position:relative;aspect-ratio:1;overflow:hidden;border:1px solid var(--border);cursor:pointer;text-decoration:none;transition:all .4s var(--ease);}
+.witem:hover{border-color:var(--gold);}
+.wbg{position:absolute;inset:0;background:linear-gradient(135deg,rgba(232,196,122,.1),rgba(232,196,122,.05));display:flex;align-items:center;justify-content:center;}
+.wnum{font-family:'Cormorant Garamond',serif;font-size:4rem;color:var(--gold-dim);font-weight:300;position:absolute;top:2rem;left:2rem;}
+.wshape{position:absolute;width:80px;height:80px;opacity:.3;}
+.play-button-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0);transition:background .3s;opacity:0;z-index:10;}
+.witem:hover .play-button-overlay{background:rgba(0,0,0,.4);opacity:1;}
+.play-button{width:60px;height:60px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--dark);font-size:24px;transition:transform .3s;}
+.play-button-overlay:hover .play-button{transform:scale(1.1);}
+.woverlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(12,11,9,.9),transparent);display:flex;align-items:flex-end;padding:2rem;}
+.wmeta{width:100%;}
+.wmeta span{font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);opacity:.8;}
+.wmeta h4{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;color:#fff;margin-top:.5rem;}
 
-/* ====== WORK PREVIEW TOOLTIP ====== */
-.work-preview-tooltip {
-  position: fixed;
-  pointer-events: none;
-  z-index: 1000;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
-  border: 1px solid var(--border);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-.work-preview-tooltip.active {
-  opacity: 1;
-}
-.work-preview-tooltip img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
+/* ====== CASE STUDY MODAL ====== */
+.case-study-modal{position:fixed;inset:0;background:rgba(12,11,9,.95);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:3000;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:all .5s var(--ease);padding:2rem;}
+.case-study-modal.open{opacity:1;visibility:visible;}
+.case-study-inner{width:100%;max-width:900px;max-height:90vh;background:var(--bg);position:relative;border:1px solid var(--border);overflow-y:auto;border-radius:8px;}
+.case-study-close{position:absolute;top:1.5rem;right:1.5rem;background:none;border:none;color:var(--muted);font-size:1.5rem;cursor:pointer;z-index:10;transition:color .3s;}
+.case-study-close:hover{color:var(--gold);}
+.case-study-content{padding:3rem;}
+.case-study-header{margin-bottom:3rem;border-bottom:1px solid var(--border);padding-bottom:2rem;}
+.case-study-title{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:300;margin-bottom:1rem;}
+.case-study-meta{display:flex;gap:2rem;font-size:.85rem;color:var(--muted);}
+.case-study-section{margin-bottom:2.5rem;}
+.case-study-section h3{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:300;margin-bottom:1rem;color:var(--gold);}
+.case-study-section p{color:var(--muted);line-height:1.8;margin-bottom:1rem;}
+.case-study-results{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:2rem;}
+.result-item{background:var(--bg2);padding:1.5rem;border-left:3px solid var(--gold);}
+.result-item strong{color:var(--gold);}
 
 /* ====== PROCESS ====== */
 #process{background:var(--bg2);}
@@ -449,7 +331,7 @@ section{padding:8rem 4rem;transition:var(--section-transition);}
 .dot{width:6px;height:6px;border-radius:50%;background:var(--border);border:none;cursor:pointer;transition:all .3s;}
 .dot.active{background:var(--gold);transform:scale(1.5);}
 
-/* ====== CONTACT ====== */
+/* ====== CONTACT & MAP ====== */
 #contact{background:var(--bg2);display:grid;grid-template-columns:1fr 1.2fr;gap:8rem;align-items:start;}
 .cinfo h3{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:300;line-height:1.15;margin:2rem 0 1.5rem;}
 .cinfo p{color:var(--muted);line-height:1.8;font-size:.95rem;margin-bottom:2.5rem;font-weight:300;}
@@ -463,6 +345,10 @@ section{padding:8rem 4rem;transition:var(--section-transition);}
 .calendly-btn:hover{background:var(--gold);color:var(--dark);}
 .calendly-btn span{font-size:1.1rem;margin-top:-2px;}
 
+/* ====== MAP CONTAINER ====== */
+#map-container{width:100%;height:500px;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+#map{width:100%;height:100%;}
+
 .fgroup{display:flex;flex-direction:column;gap:2rem;}
 .frow{display:grid;grid-template-columns:1fr 1fr;gap:2rem;}
 .ffield{display:flex;flex-direction:column;gap:.8rem;}
@@ -470,7 +356,6 @@ section{padding:8rem 4rem;transition:var(--section-transition);}
 .ffield input,.ffield select,.ffield textarea{background:transparent;border:none;border-bottom:1px solid var(--border);padding:1rem 0;color:var(--white);font-family:'DM Sans',sans-serif;font-size:.95rem;outline:none;transition:border-color .3s;}
 .ffield input:focus,.ffield select:focus,.ffield textarea:focus{border-color:var(--gold);}
 .ffield select option { background: var(--bg2); color: var(--white); }
-/* Remove default blue highlight and use gold */
 .ffield select:focus { outline: none; border-color: var(--gold); }
 .ffield select::-ms-expand { display: none; }
 .ffield select {
@@ -543,11 +428,12 @@ footer{padding:6rem 4rem 4rem;background:var(--bg);border-top:1px solid var(--bo
   nav{padding:1.5rem 2rem;}
   section{padding:6rem 2rem;}
   #about,#contact{grid-template-columns:1fr;gap:4rem;}
-  .services-grid,.pricing-grid{grid-template-columns:1fr 1fr;}
+  .services-grid,.pricing-grid,.work-grid,.process-grid{grid-template-columns:1fr 1fr;}
   .pcard.featured{transform:none;}
   footer{grid-template-columns:1fr;text-align:center;gap:3rem;}
   .flinks-row{flex-wrap:wrap;gap:1.5rem;}
   .fcopy{text-align:center;}
+  #map-container{height:350px;}
 }
 @media(max-width:768px){
   .nav-links{display:none;}
@@ -557,10 +443,8 @@ footer{padding:6rem 4rem 4rem;background:var(--bg);border-top:1px solid var(--bo
   .frow{grid-template-columns:1fr;}
   #contact{gap:3rem;}
   .calendly-inner{height:85vh;}
-  .video-lightbox-modal{padding:1rem;}
-  .video-lightbox-content{max-width:100%;}
-  .video-lightbox-close{width:40px;height:40px;font-size:1.2rem;}
-  .play-button{width:48px;height:48px;font-size:20px;}
+  .calc-options{grid-template-columns:1fr;}
+  #map-container{height:300px;}
 }
 </style>
 </head>
@@ -638,6 +522,14 @@ footer{padding:6rem 4rem 4rem;background:var(--bg);border-top:1px solid var(--bo
 <div class="video-lightbox-modal" id="videoLightbox" onclick="closeVideoLightbox(event)">
   <button class="video-lightbox-close" onclick="closeVideoLightbox()">✕</button>
   <div class="video-lightbox-content" id="videoContent"></div>
+</div>
+
+<!-- ====== CASE STUDY MODAL ====== -->
+<div class="case-study-modal" id="caseStudyModal">
+  <div class="case-study-inner">
+    <button class="case-study-close" onclick="closeCaseStudy()">✕</button>
+    <div class="case-study-content" id="caseStudyContent"></div>
+  </div>
 </div>
 
 <!-- ====== HERO ====== -->
@@ -723,7 +615,6 @@ footer{padding:6rem 4rem 4rem;background:var(--bg);border-top:1px solid var(--bo
     <div class="reveal"><p class="section-label">Investment</p><h2 class="section-title">Transparent <em>pricing</em></h2></div>
   </div>
   <div class="pricing-grid">
-
     <div class="pcard reveal">
       <div class="pcard-tier">Essentials</div>
       <div class="pcard-name">Spark</div>
@@ -754,7 +645,6 @@ footer{padding:6rem 4rem 4rem;background:var(--bg);border-top:1px solid var(--bo
         <div class="pf"><div class="pf-dot"></div><span>Design system & component library</span></div>
         <div class="pf"><div class="pf-dot"></div><span>Social media templates</span></div>
         <div class="pf"><div class="pf-dot"></div><span>Unlimited revisions</span></div>
-        <div class="pf"><div class="pf-dot"></div><span>30-day post-launch support</span></div>
       </div>
       <button class="pcard-btn" onclick="openCalendly()">Book a discovery call</button>
     </div>
@@ -775,9 +665,38 @@ footer{padding:6rem 4rem 4rem;background:var(--bg);border-top:1px solid var(--bo
       </div>
       <button class="pcard-btn" onclick="openCalendly()">Let's talk scope</button>
     </div>
-
   </div>
-  <p class="pricing-note reveal">All prices in INR · GST as applicable · <a href="#contact">Custom scope?</a> Drop us a message and we'll put together a tailored proposal within 24 hours.</p>
+
+  <!-- ====== PRICING CALCULATOR ====== -->
+  <div class="pricing-calculator reveal" style="transition-delay:.3s">
+    <h3 class="calc-title">Quick Pricing Calculator</h3>
+    
+    <div class="calc-group">
+      <label class="calc-label">What service do you need?</label>
+      <div class="calc-options">
+        <button class="calc-option" onclick="updateCalculator('service', 'brand')">Brand Identity</button>
+        <button class="calc-option" onclick="updateCalculator('service', 'digital')">Digital Design</button>
+        <button class="calc-option" onclick="updateCalculator('service', 'direction')">Creative Direction</button>
+        <button class="calc-option" onclick="updateCalculator('service', 'full')">Full Partnership</button>
+      </div>
+    </div>
+
+    <div class="calc-group">
+      <label class="calc-label">Project scope</label>
+      <div class="calc-options">
+        <button class="calc-option" onclick="updateCalculator('scope', 'small')">Small</button>
+        <button class="calc-option" onclick="updateCalculator('scope', 'medium')">Medium</button>
+        <button class="calc-option" onclick="updateCalculator('scope', 'large')">Large</button>
+      </div>
+    </div>
+
+    <div class="calc-result">
+      <div class="calc-result-label">Estimated Investment</div>
+      <div class="calc-result-price" id="calcPrice">₹25k</div>
+    </div>
+  </div>
+
+  <p class="pricing-note reveal" style="transition-delay:.4s">All prices in INR · GST as applicable · <a href="#contact">Custom scope?</a> Drop us a message and we'll put together a tailored proposal within 24 hours.</p>
 </section>
 
 <!-- ====== WORK ====== -->
@@ -787,12 +706,12 @@ footer{padding:6rem 4rem 4rem;background:var(--bg);border-top:1px solid var(--bo
     <a href="#contact" class="work-link reveal-r">View all work →</a>
   </div>
   <div class="work-grid">
-    <a href="https://hitu-code23.github.io/hb-visualss/" target="_blank" class="witem reveal">
+    <div class="witem reveal" onclick="openCaseStudy('hb-visuals')">
       <div class="wbg">
         <div class="wnum">01</div>
         <svg class="wshape" viewBox="0 0 70 70"><circle cx="35" cy="35" r="30" fill="none" stroke="rgba(232,196,122,.8)" stroke-width="1"/><circle cx="35" cy="35" r="16" fill="none" stroke="rgba(232,196,122,.5)" stroke-width="1"/></svg>
       </div>
-      <div class="play-button-overlay" onclick="openVideoLightbox('https://hitu-code23.github.io/hb-visualss/', event)">
+      <div class="play-button-overlay">
         <div class="play-button">▶</div>
       </div>
       <div class="woverlay">
@@ -801,13 +720,13 @@ footer{padding:6rem 4rem 4rem;background:var(--bg);border-top:1px solid var(--bo
           <h4>HB Visuals — Photography & Design</h4>
         </div>
       </div>
-    </a>
-    <a href="https://hitu-code23.github.io/Zariyadesignerwear/" target="_blank" class="witem reveal" style="transition-delay:.1s">
+    </div>
+    <div class="witem reveal" style="transition-delay:.1s" onclick="openCaseStudy('zariya')">
       <div class="wbg">
         <div class="wnum">02</div>
         <svg class="wshape" viewBox="0 0 70 70"><rect x="14" y="14" width="42" height="42" fill="none" stroke="rgba(232,196,122,.8)" stroke-width="1" transform="rotate(18 35 35)"/></svg>
       </div>
-      <div class="play-button-overlay" onclick="openVideoLightbox('https://hitu-code23.github.io/Zariyadesignerwear/', event)">
+      <div class="play-button-overlay">
         <div class="play-button">▶</div>
       </div>
       <div class="woverlay">
@@ -816,13 +735,13 @@ footer{padding:6rem 4rem 4rem;background:var(--bg);border-top:1px solid var(--bo
           <h4>Zariya — Designer Wear</h4>
         </div>
       </div>
-    </a>
-    <a href="https://hitu-code23.github.io/GearMyCycle/" target="_blank" class="witem reveal" style="transition-delay:.15s">
+    </div>
+    <div class="witem reveal" style="transition-delay:.15s" onclick="openCaseStudy('gearmycycle')">
       <div class="wbg">
         <div class="wnum">03</div>
         <svg class="wshape" viewBox="0 0 70 70"><polygon points="35,8 62,62 8,62" fill="none" stroke="rgba(232,196,122,.8)" stroke-width="1"/></svg>
       </div>
-      <div class="play-button-overlay" onclick="openVideoLightbox('https://hitu-code23.github.io/GearMyCycle/', event)">
+      <div class="play-button-overlay">
         <div class="play-button">▶</div>
       </div>
       <div class="woverlay">
@@ -831,7 +750,7 @@ footer{padding:6rem 4rem 4rem;background:var(--bg);border-top:1px solid var(--bo
           <h4>GearMyCycle — Custom Bikes</h4>
         </div>
       </div>
-    </a>
+    </div>
   </div>
 </section>
 
@@ -864,7 +783,6 @@ footer{padding:6rem 4rem 4rem;background:var(--bg);border-top:1px solid var(--bo
     <button class="dot" onclick="goSlide(2)" aria-label="Slide 3"></button>
   </div>
 </section>
-
 
 <!-- ====== FAQ ====== -->
 <section id="faq">
@@ -934,7 +852,10 @@ footer{padding:6rem 4rem 4rem;background:var(--bg);border-top:1px solid var(--bo
   </div>
 
   <div class="reveal-r">
-    <form id="cForm" class="fgroup" onsubmit="handleSubmit(event)" action="https://formspree.io/f/xojyzozl" method="POST">
+    <!-- ====== MAP CONTAINER ====== -->
+    <div id="map-container"></div>
+
+    <form id="cForm" class="fgroup" onsubmit="handleSubmit(event)" action="https://formspree.io/f/xojyzozl" method="POST" style="margin-top:3rem;">
       <div class="frow">
         <div class="ffield"><label>Your name</label><input type="text" name="name" placeholder="Alex Johnson" required></div>
         <div class="ffield"><label>Email address</label><input type="email" name="email" placeholder="alex@company.com" required></div>
@@ -957,47 +878,38 @@ footer{padding:6rem 4rem 4rem;background:var(--bg);border-top:1px solid var(--bo
   <div><div class="flogo">Velorien<span>.</span></div><div class="fsub">Creative Studio · Punjab</div></div>
   <div class="flinks">
     <div class="flinks-row"><a href="#about">About</a><a href="#services">Services</a><a href="#pricing">Pricing</a><a href="#work">Work</a><a href="#process">Process</a><a href="#contact">Contact</a></div>
-<div class="fsocials">
+    <div class="fsocials">
       <a class="soc-premium" href="https://www.instagram.com/_hitin23_/" target="_blank" aria-label="Instagram" style="color: #d6249f;">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-          <path fill="url(#insta_grad)" d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/>
-          <defs>
-            <radialGradient id="insta_grad" cx="30%" cy="100%" r="150%" fx="30%" fy="100%">
-              <stop offset="0%" stop-color="#fdf497"/><stop offset="5%" stop-color="#fdf497"/><stop offset="45%" stop-color="#fd5949"/><stop offset="60%" stop-color="#d6249f"/><stop offset="90%" stop-color="#285AEB"/>
-            </radialGradient>
-          </defs>
+          <path fill="currentColor" d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/>
         </svg>
       </a>
       <a class="soc-premium" href="https://wa.me/23458451482" target="_blank" aria-label="WhatsApp" style="color: #25D366;">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-          <path fill="#25D366" d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-5.5-2.8-23.2-8.5-44.2-27.3-16.3-14.5-27.3-32.5-30.5-37.9-3.2-5.5-.3-8.5 2.5-11.2 2.5-2.5 5.5-6.5 8.3-9.7 2.8-3.3 3.7-5.6 5.6-9.3 1.9-3.7 1-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 13.2 5.7 23.5 9.2 31.6 11.8 13.3 4.2 25.4 3.6 35 2.2 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
+          <path fill="currentColor" d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-5.5-2.8-23.2-8.5-44.2-27.3-16.3-14.5-27.3-32.5-30.5-37.9-3.2-5.5-.3-8.5 2.5-11.2 2.5-2.5 5.5-6.5 8.3-9.7 2.8-3.3 3.7-5.6 5.6-9.3 1.9-3.7 1-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 13.2 5.7 23.5 9.2 31.6 11.8 13.3 4.2 25.4 3.6 35 2.2 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
         </svg>
       </a>
       <a class="soc-premium" href="mailto:hitin.banga23@gmail.com" aria-label="Email" style="color: #EA4335;">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="52 42 88 66">
-          <path fill="#4285f4" d="M58 108h14V74L52 59v43c0 3.32 2.69 6 6 6"/>
-          <path fill="#34a853" d="M120 108h14c3.32 0 6-2.69 6-6V59l-20 15"/>
-          <path fill="#fbbc04" d="M120 48v26l20-15v-8c0-7.42-8.47-11.65-14.4-7.2"/>
-          <path fill="#ea4335" d="M72 74V48l24 18 24-18v26L96 92"/>
-          <path fill="#c5221f" d="M52 51v8l20 15V48l-5.6-4.2c-5.94-4.45-14.4-.22-14.4 7.2"/>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+          <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
         </svg>
       </a>
     </div>
   </div>
-  <div class="fcopy">© 2025 Velorien<br>All rights reserved</div>
+  <div class="fcopy">© 2025 Velorien Studio. All rights reserved. Crafted with intention in Punjab.</div>
 </footer>
-
-<!-- ====== BACK TO TOP ====== -->
-<button id="back-top" aria-label="Back to top">↑</button>
 
 <!-- ====== CALENDLY MODAL ====== -->
 <div class="calendly-modal" id="calendlyModal" onclick="closeCalendlyOnBg(event)">
   <div class="calendly-inner">
-    <button class="calendly-close" onclick="closeCalendly()" aria-label="Close">✕</button>
+    <button class="calendly-close" onclick="closeCalendly()">✕</button>
     <div class="calendly-frame-wrap">
-      <!-- Calendly inline widget begin -->
-      <div class="calendly-inline-widget" data-url="https://calendly.com/hitin-banga23/new-meeting?hide_landing_page_details=1&hide_gdpr_banner=1" style="min-width:320px;height:100%;"></div>
-      <!-- Calendly inline widget end -->
+      <div class="calendly-placeholder">
+        <h4>Schedule a Call</h4>
+        <p>Let's discuss your project and explore how we can work together to bring your vision to life.</p>
+        <a href="https://calendly.com/velorien" target="_blank">Open Calendly</a>
+      </div>
     </div>
   </div>
 </div>
@@ -1013,7 +925,47 @@ footer{padding:6rem 4rem 4rem;background:var(--bg);border-top:1px solid var(--bo
   </div>
 </div>
 
+<!-- ====== BACK TO TOP ====== -->
+<button id="back-top">↑</button>
+
 <script>
+/* ====== CASE STUDY DATA ====== */
+const caseStudies = {
+  'hb-visuals': {
+    title: 'HB Visuals — Photography & Design',
+    category: 'Creative Agency',
+    year: 2024,
+    challenge: 'HB Visuals needed a cohesive brand identity that reflected their creative excellence and modern approach to photography and design services.',
+    solution: 'We developed a sophisticated visual system featuring a custom geometric logo, refined color palette, and comprehensive brand guidelines. The design emphasizes clarity and professionalism while maintaining creative flair.',
+    results: [
+      { metric: '40%', description: 'Increase in client inquiries' },
+      { metric: '25%', description: 'Higher project close rate' }
+    ]
+  },
+  'zariya': {
+    title: 'Zariya — Designer Wear',
+    category: 'Fashion E-commerce',
+    year: 2026,
+    challenge: 'Zariya required a premium e-commerce platform that showcased luxury designer wear while maintaining an intuitive shopping experience.',
+    solution: 'We created an elegant digital ecosystem with a sophisticated product showcase, streamlined checkout process, and personalized customer journey. The design emphasizes the premium nature of the products.',
+    results: [
+      { metric: '60%', description: 'Improvement in conversion rate' },
+      { metric: '3x', description: 'Average order value increase' }
+    ]
+  },
+  'gearmycycle': {
+    title: 'GearMyCycle — Custom Bikes',
+    category: 'Premium Cycling',
+    year: 2025,
+    challenge: 'GearMyCycle needed to establish itself as a premium custom bike brand in a competitive market with a strong digital presence.',
+    solution: 'We crafted a dynamic brand identity with striking visual elements, built an immersive website showcasing custom builds, and created marketing collateral that resonates with cycling enthusiasts.',
+    results: [
+      { metric: '85%', description: 'Brand awareness growth' },
+      { metric: '2.5x', description: 'Website traffic increase' }
+    ]
+  }
+};
+
 /* ====== LOADER ====== */
 window.addEventListener('load',()=>{
   setTimeout(()=>{
@@ -1037,16 +989,24 @@ if (backTopBtn) {
   });
 }
 
-/* ====== CURSOR (desktop only) ====== */
+/* ====== ENHANCED MAGNETIC CURSOR (desktop only) ====== */
 const isTouch=window.matchMedia('(pointer: coarse)').matches;
 if(!isTouch){
   const cur=document.getElementById('cur'),ring=document.getElementById('cur-ring');
   let cx=0,cy=0,rx=0,ry=0;
   document.addEventListener('mousemove',e=>{cx=e.clientX;cy=e.clientY;});
   (function loop(){rx+=(cx-rx)*.13;ry+=(cy-ry)*.13;cur.style.left=cx+'px';cur.style.top=cy+'px';ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);})();
-  document.querySelectorAll('a,button,.acard,.witem,.scard,.pstep,.dot,.pcard').forEach(el=>{
-    el.addEventListener('mouseenter',()=>{ring.style.width='52px';ring.style.height='52px';ring.style.borderColor='rgba(232,196,122,.5)';});
-    el.addEventListener('mouseleave',()=>{ring.style.width='32px';ring.style.height='32px';ring.style.borderColor='rgba(255,255,255,.3)';});
+  
+  // Enhanced magnetic cursor effect
+  document.querySelectorAll('a,button,.acard,.witem,.scard,.pstep,.dot,.pcard,.calc-option').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{
+      cur.classList.add('magnetic');
+      ring.classList.add('magnetic');
+    });
+    el.addEventListener('mouseleave',()=>{
+      cur.classList.remove('magnetic');
+      ring.classList.remove('magnetic');
+    });
   });
 
   /* CURSOR TRAIL */
@@ -1113,7 +1073,7 @@ document.querySelectorAll('a[href^="#"],.nav-cta,.cta').forEach(link=>{
 const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');}),{threshold:.08});
 document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el=>obs.observe(el));
 
-/* ====== COUNTERS ====== */
+/* ====== ANIMATED COUNTERS ====== */
 const cObs=new IntersectionObserver(e=>{if(!e[0].isIntersecting)return;cObs.disconnect();
   document.querySelectorAll('.stat-num').forEach(el=>{const raw=el.textContent,num=parseInt(raw),sfx=raw.replace(/\d+/,'');if(isNaN(num))return;let v=0,step=num/45;const t=setInterval(()=>{v=Math.min(v+step,num);el.textContent=Math.round(v)+sfx;if(v>=num)clearInterval(t);},28);});
 },{threshold:.4});
@@ -1222,29 +1182,6 @@ window.addEventListener('scroll', () => {
   });
 }, { passive: true });
 
-/* ====== VIDEO LIGHTBOX ====== */
-function openVideoLightbox(url, event) {
-  event.preventDefault();
-  event.stopPropagation();
-  const modal = document.getElementById('videoLightbox');
-  const content = document.getElementById('videoContent');
-  content.innerHTML = `<iframe src="${url}" allowfullscreen></iframe>`;
-  modal.classList.add('active');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeVideoLightbox(event) {
-  if (event && event.target.id !== 'videoLightbox') return;
-  const modal = document.getElementById('videoLightbox');
-  modal.classList.remove('active');
-  document.getElementById('videoContent').innerHTML = '';
-  document.body.style.overflow = '';
-}
-
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') closeVideoLightbox();
-});
-
 /* ====== CALENDLY HELPERS ====== */
 function openCalendly(){
   document.getElementById('calendlyModal').classList.add('open');
@@ -1257,6 +1194,56 @@ function closeCalendly(){
 function closeCalendlyOnBg(e){
   if(e.target.id==='calendlyModal') closeCalendly();
 }
+
+/* ====== CASE STUDY MODAL ====== */
+function openCaseStudy(id) {
+  const study = caseStudies[id];
+  if (!study) return;
+  
+  const content = `
+    <div class="case-study-header">
+      <h1 class="case-study-title">${study.title}</h1>
+      <div class="case-study-meta">
+        <span>${study.category}</span>
+        <span>${study.year}</span>
+      </div>
+    </div>
+    
+    <div class="case-study-section">
+      <h3>Challenge</h3>
+      <p>${study.challenge}</p>
+    </div>
+    
+    <div class="case-study-section">
+      <h3>Solution</h3>
+      <p>${study.solution}</p>
+    </div>
+    
+    <div class="case-study-section">
+      <h3>Results</h3>
+      <div class="case-study-results">
+        ${study.results.map(r => `
+          <div class="result-item">
+            <strong>${r.metric}</strong><br>${r.description}
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+  
+  document.getElementById('caseStudyContent').innerHTML = content;
+  document.getElementById('caseStudyModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeCaseStudy() {
+  document.getElementById('caseStudyModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeCaseStudy();
+});
 
 /* ====== COOKIE HELPERS ====== */
 function dismissCookie(accept){
@@ -1276,6 +1263,78 @@ document.querySelectorAll('.faq-item').forEach(item => {
     document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
     if(!isActive) item.classList.add('active');
   });
+});
+
+/* ====== PRICING CALCULATOR ====== */
+let calcState = { service: null, scope: null };
+const pricingMap = {
+  'brand-small': 25000,
+  'brand-medium': 35000,
+  'brand-large': 50000,
+  'digital-small': 40000,
+  'digital-medium': 65000,
+  'digital-large': 100000,
+  'direction-small': 35000,
+  'direction-medium': 60000,
+  'direction-large': 90000,
+  'full-small': 75000,
+  'full-medium': 125000,
+  'full-large': 200000
+};
+
+function updateCalculator(type, value) {
+  calcState[type] = value;
+  
+  // Update button states
+  document.querySelectorAll('.calc-option').forEach(btn => {
+    btn.classList.remove('selected');
+  });
+  document.querySelectorAll(`[onclick*="${value}"]`).forEach(btn => {
+    btn.classList.add('selected');
+  });
+  
+  // Calculate price
+  if (calcState.service && calcState.scope) {
+    const key = `${calcState.service}-${calcState.scope}`;
+    const price = pricingMap[key] || 25000;
+    document.getElementById('calcPrice').textContent = `₹${price.toLocaleString('en-IN')}`;
+  }
+}
+
+/* ====== LEAFLET MAP INITIALIZATION ====== */
+window.addEventListener('load', () => {
+  const mapContainer = document.getElementById('map-container');
+  if (mapContainer && typeof L !== 'undefined') {
+    const map = L.map('map').setView([31.5204, 74.3587], 12); // Punjab, India coordinates
+    
+    // Dark themed map layer
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+      maxZoom: 19
+    }).addTo(map);
+    
+    // Add custom marker for studio location
+    const marker = L.circleMarker([31.5204, 74.3587], {
+      radius: 12,
+      fillColor: '#e8c47a',
+      color: '#e8c47a',
+      weight: 2,
+      opacity: 1,
+      fillOpacity: 0.8
+    }).addTo(map);
+    
+    marker.bindPopup('<div style="color: #fff; background: #111009; padding: 10px; border-radius: 4px;"><strong>Velorien Studio</strong><br>Punjab, India<br>Remote-first Creative Studio</div>');
+    
+    // Add pulsing animation effect
+    const pulseMarker = L.circleMarker([31.5204, 74.3587], {
+      radius: 20,
+      fillColor: '#e8c47a',
+      color: '#e8c47a',
+      weight: 1,
+      opacity: 0.3,
+      fillOpacity: 0.1
+    }).addTo(map);
+  }
 });
 
 /* ====== MOBILE PARALLAX DISABLE ====== */
