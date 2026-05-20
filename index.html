@@ -90,6 +90,16 @@ nav.scrolled{background:var(--nav-bg);backdrop-filter:blur(18px);-webkit-backdro
 .nav-cta{padding:.55rem 1.5rem;border:1px solid var(--gold);color:var(--gold);font-family:'DM Sans',sans-serif;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;background:transparent;cursor:pointer;transition:background .3s,color .3s;}
 .nav-cta:hover{background:var(--gold);color:var(--dark);}
 
+/* ====== THEME TOGGLE ====== */
+.theme-toggle{
+  width:36px;height:36px;border:1px solid var(--border);background:transparent;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:border-color .3s,background .3s;
+  -webkit-tap-highlight-color:transparent;position:relative;
+}
+.theme-toggle:hover{border-color:var(--gold);background:var(--gold-dim);}
+.theme-icon{width:18px;height:18px;transition:opacity .3s,transform .3s;}
+
 /* ====== MUSIC TOGGLE ====== */
 .music-toggle{
   width:36px;height:36px;border:1px solid var(--border);background:transparent;cursor:pointer;
@@ -266,12 +276,111 @@ section{padding:8rem 4rem;transition:var(--section-transition);}
   position: fixed;
   top: 0;
   left: 0;
-  height: 2px;
+  height: 3px;
   background: linear-gradient(to right, var(--gold), rgba(232, 196, 122, 0.3));
   width: 0%;
   z-index: 999;
   transition: width 0.1s ease;
   box-shadow: 0 0 10px rgba(232, 196, 122, 0.5);
+}
+
+/* ====== PARALLAX SECTION ====== */
+.parallax-bg {
+  position: relative;
+  overflow: hidden;
+}
+.parallax-element {
+  will-change: transform;
+}
+
+/* ====== VIDEO LIGHTBOX ====== */
+.video-lightbox-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(12, 11, 9, 0.98);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.5s var(--ease);
+  padding: 2rem;
+}
+.video-lightbox-modal.active {
+  opacity: 1;
+  visibility: visible;
+}
+.video-lightbox-content {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+}
+.video-lightbox-content iframe,
+.video-lightbox-content video {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+.video-lightbox-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: rgba(232, 196, 122, 0.2);
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  font-size: 1.5rem;
+  cursor: pointer;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s;
+  z-index: 10;
+}
+.video-lightbox-close:hover {
+  background: var(--gold);
+  color: var(--dark);
+}
+
+/* ====== PLAY BUTTON OVERLAY ====== */
+.play-button-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  transition: opacity 0.3s;
+  cursor: pointer;
+}
+.witem:hover .play-button-overlay {
+  opacity: 1;
+}
+.play-button {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--dark);
+  font-size: 24px;
+  transition: transform 0.3s;
+}
+.play-button-overlay:hover .play-button {
+  transform: scale(1.15);
 }
 
 /* ====== WORK ====== */
@@ -435,6 +544,10 @@ footer{padding:6rem 4rem 4rem;background:var(--bg);border-top:1px solid var(--bo
   .frow{grid-template-columns:1fr;}
   #contact{gap:3rem;}
   .calendly-inner{height:85vh;}
+  .video-lightbox-modal{padding:1rem;}
+  .video-lightbox-content{max-width:100%;}
+  .video-lightbox-close{width:40px;height:40px;font-size:1.2rem;}
+  .play-button{width:48px;height:48px;font-size:20px;}
 }
 </style>
 </head>
@@ -471,6 +584,19 @@ footer{padding:6rem 4rem 4rem;background:var(--bg);border-top:1px solid var(--bo
     <li><a href="#contact">Contact</a></li>
   </ul>
   <div class="nav-right">
+    <button class="theme-toggle" id="themeToggle" title="Toggle dark/light mode">
+      <svg class="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      </svg>
+    </button>
     <button class="music-toggle" id="musicToggle" title="Play background music">
       <svg class="music-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
         <path d="M9 18V5l12-2v13"></path>
@@ -492,8 +618,17 @@ footer{padding:6rem 4rem 4rem;background:var(--bg);border-top:1px solid var(--bo
   <a href="#contact" class="ml">Contact</a>
 </div>
 
+<!-- ====== PROGRESS BAR ====== -->
+<div id="progress-bar"></div>
+
+<!-- ====== VIDEO LIGHTBOX ====== -->
+<div class="video-lightbox-modal" id="videoLightbox" onclick="closeVideoLightbox(event)">
+  <button class="video-lightbox-close" onclick="closeVideoLightbox()">✕</button>
+  <div class="video-lightbox-content" id="videoContent"></div>
+</div>
+
 <!-- ====== HERO ====== -->
-<section id="hero">
+<section id="hero" class="parallax-bg">
   <video id="bg-video" autoplay muted loop playsinline>
     <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260416_031918_443d301c-b6d9-4a18-b102-c946a16d86ad.mp4" type="video/mp4">
   </video>
@@ -644,6 +779,9 @@ footer{padding:6rem 4rem 4rem;background:var(--bg);border-top:1px solid var(--bo
         <div class="wnum">01</div>
         <svg class="wshape" viewBox="0 0 70 70"><circle cx="35" cy="35" r="30" fill="none" stroke="rgba(232,196,122,.8)" stroke-width="1"/><circle cx="35" cy="35" r="16" fill="none" stroke="rgba(232,196,122,.5)" stroke-width="1"/></svg>
       </div>
+      <div class="play-button-overlay" onclick="openVideoLightbox('https://hitu-code23.github.io/hb-visualss/', event)">
+        <div class="play-button">▶</div>
+      </div>
       <div class="woverlay">
         <div class="wmeta">
           <span>Creative Agency · 2024</span>
@@ -656,6 +794,9 @@ footer{padding:6rem 4rem 4rem;background:var(--bg);border-top:1px solid var(--bo
         <div class="wnum">02</div>
         <svg class="wshape" viewBox="0 0 70 70"><rect x="14" y="14" width="42" height="42" fill="none" stroke="rgba(232,196,122,.8)" stroke-width="1" transform="rotate(18 35 35)"/></svg>
       </div>
+      <div class="play-button-overlay" onclick="openVideoLightbox('https://hitu-code23.github.io/Zariyadesignerwear/', event)">
+        <div class="play-button">▶</div>
+      </div>
       <div class="woverlay">
         <div class="wmeta">
           <span>Fashion E-commerce · 2026</span>
@@ -667,6 +808,9 @@ footer{padding:6rem 4rem 4rem;background:var(--bg);border-top:1px solid var(--bo
       <div class="wbg">
         <div class="wnum">03</div>
         <svg class="wshape" viewBox="0 0 70 70"><polygon points="35,8 62,62 8,62" fill="none" stroke="rgba(232,196,122,.8)" stroke-width="1"/></svg>
+      </div>
+      <div class="play-button-overlay" onclick="openVideoLightbox('https://hitu-code23.github.io/GearMyCycle/', event)">
+        <div class="play-button">▶</div>
       </div>
       <div class="woverlay">
         <div class="wmeta">
@@ -866,13 +1010,19 @@ window.addEventListener('load',()=>{
 
 /* ====== SCROLL HELPER ====== */
 function scrollToSection(id){
-  document.getElementById(id).scrollIntoView({behavior:'smooth'});
+  const element = document.getElementById(id);
+  if (element) {
+    element.scrollIntoView({behavior:'smooth'});
+  }
 }
 
 /* ====== BACK TO TOP ====== */
-document.getElementById('back-top').addEventListener('click', function(){
-  window.scrollTo({top:0, behavior:'smooth'});
-});
+const backTopBtn = document.getElementById('back-top');
+if (backTopBtn) {
+  backTopBtn.addEventListener('click', function(){
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+}
 
 /* ====== CURSOR (desktop only) ====== */
 const isTouch=window.matchMedia('(pointer: coarse)').matches;
@@ -1010,8 +1160,77 @@ musicToggle.addEventListener('click',()=>{
   musicPlaying=!musicPlaying;
 });
 
-/* ====== THEME (dark fixed) ====== */
-document.documentElement.setAttribute('data-theme','dark');
+/* ====== THEME TOGGLE ====== */
+const themeToggle = document.getElementById('themeToggle');
+const htmlElement = document.documentElement;
+const savedTheme = localStorage.getItem('theme') || 'dark';
+
+function setTheme(theme) {
+  htmlElement.setAttribute('data-theme', theme);
+  localStorage.setItem('theme', theme);
+  updateThemeIcon(theme);
+}
+
+function updateThemeIcon(theme) {
+  const icon = themeToggle.querySelector('.theme-icon');
+  if (theme === 'light') {
+    icon.innerHTML = '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>';
+  } else {
+    icon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
+  }
+}
+
+setTheme(savedTheme);
+
+themeToggle.addEventListener('click', () => {
+  const currentTheme = htmlElement.getAttribute('data-theme');
+  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  setTheme(newTheme);
+});
+
+/* ====== SCROLL PROGRESS BAR ====== */
+const progressBar = document.getElementById('progress-bar');
+window.addEventListener('scroll', () => {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const scrollPercent = (scrollTop / docHeight) * 100;
+  progressBar.style.width = scrollPercent + '%';
+}, { passive: true });
+
+/* ====== PARALLAX EFFECT ====== */
+window.addEventListener('scroll', () => {
+  const parallaxElements = document.querySelectorAll('.parallax-element');
+  parallaxElements.forEach(el => {
+    const scrollPosition = window.scrollY;
+    const elementOffset = el.offsetTop;
+    const distance = scrollPosition - elementOffset;
+    const parallaxSpeed = 0.5;
+    el.style.transform = `translateY(${distance * parallaxSpeed}px)`;
+  });
+}, { passive: true });
+
+/* ====== VIDEO LIGHTBOX ====== */
+function openVideoLightbox(url, event) {
+  event.preventDefault();
+  event.stopPropagation();
+  const modal = document.getElementById('videoLightbox');
+  const content = document.getElementById('videoContent');
+  content.innerHTML = `<iframe src="${url}" allowfullscreen></iframe>`;
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeVideoLightbox(event) {
+  if (event && event.target.id !== 'videoLightbox') return;
+  const modal = document.getElementById('videoLightbox');
+  modal.classList.remove('active');
+  document.getElementById('videoContent').innerHTML = '';
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeVideoLightbox();
+});
 
 /* ====== CALENDLY HELPERS ====== */
 function openCalendly(){
@@ -1045,6 +1264,14 @@ document.querySelectorAll('.faq-item').forEach(item => {
     if(!isActive) item.classList.add('active');
   });
 });
+
+/* ====== MOBILE PARALLAX DISABLE ====== */
+if (window.innerWidth < 768) {
+  const parallaxElements = document.querySelectorAll('.parallax-element');
+  parallaxElements.forEach(el => {
+    el.style.transform = 'none';
+  });
+}
 
 </script>
 </body>
