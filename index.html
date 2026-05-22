@@ -343,7 +343,9 @@ section{padding:8rem 4rem;transition:var(--section-transition);}
 .calendly-label{font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:1.5rem;}
 .calendly-btn{display:inline-flex;align-items:center;gap:.8rem;padding:.9rem 2rem;background:var(--gold-dim);border:1px solid var(--gold);color:var(--gold);font-family:'DM Sans',sans-serif;font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;transition:all .3s;}
 .calendly-btn:hover{background:var(--gold);color:var(--dark);}
-.calendly-btn span{font-size:1.1rem;margin-top:-2px;}
+.calendly-btn span{font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;}
+.calendly-icon-svg{width:18px;height:18px;color:var(--gold);transition:transform .3s var(--ease);}
+.calendly-btn:hover .calendly-icon-svg{transform:scale(1.1);color:var(--dark);}
 
 /* ====== MAP CONTAINER ====== */
 #map-container{width:100%;height:500px;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
@@ -829,7 +831,21 @@ footer{padding:6rem 4rem 4rem;background:var(--bg);border-top:1px solid var(--bo
     </div>
     <div class="calendly-wrap">
       <p class="calendly-label">Schedule a call</p>
-      <button class="calendly-btn" onclick="openCalendly()"><span>📅</span> Book on Calendly</button>
+      <button class="calendly-btn" onclick="openCalendly()">
+        <svg class="calendly-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+          <path d="M8 14h.01"></path>
+          <path d="M12 14h.01"></path>
+          <path d="M16 14h.01"></path>
+          <path d="M8 18h.01"></path>
+          <path d="M12 18h.01"></path>
+          <path d="M16 18h.01"></path>
+        </svg>
+        <span>Book on Calendly</span>
+      </button>
     </div>
   </div>
 
