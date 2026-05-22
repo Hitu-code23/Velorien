@@ -889,11 +889,9 @@ footer{padding:6rem 4rem 4rem;background:var(--bg);border-top:1px solid var(--bo
   <div class="calendly-inner">
     <button class="calendly-close" onclick="closeCalendly()">✕</button>
     <div class="calendly-frame-wrap">
-      <div class="calendly-placeholder">
-        <h4>Schedule a Call</h4>
-        <p>Let's discuss your project and explore how we can work together to bring your vision to life.</p>
-        <a href="https://calendly.com/velorien" target="_blank">Open Calendly</a>
-      </div>
+      <!-- Calendly inline widget begin -->
+      <div class="calendly-inline-widget" data-url="https://calendly.com/velorien?hide_landing_page_details=1&hide_gdpr_banner=1" style="min-width:320px;height:100%;"></div>
+      <!-- Calendly inline widget end -->
     </div>
   </div>
 </div>
@@ -1170,6 +1168,15 @@ window.addEventListener('scroll', () => {
 function openCalendly(){
   document.getElementById('calendlyModal').classList.add('open');
   document.body.style.overflow='hidden';
+  // Ensure Calendly widget is initialized when modal opens
+  if (window.Calendly) {
+    window.Calendly.initInlineWidget({
+      url: 'https://calendly.com/velorien?hide_landing_page_details=1&hide_gdpr_banner=1',
+      parentElement: document.querySelector('.calendly-inline-widget'),
+      prefill: {},
+      utm: {}
+    });
+  }
 }
 function closeCalendly(){
   document.getElementById('calendlyModal').classList.remove('open');
