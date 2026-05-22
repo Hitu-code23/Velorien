@@ -7,7 +7,6 @@
 <!-- Calendly badge widget begin -->
 <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
 <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
-<!-- Map section updated to Google Maps Iframe -->
 <!-- Calendly badge widget end -->
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap');
@@ -22,13 +21,6 @@
   --bg:var(--dark);--bg2:var(--dark2);--text:var(--white);
   --nav-bg:rgba(12,11,9,.92);
   --section-transition: background .5s, color .5s;
-}
-[data-theme="light"]{
-  --bg:#f5f0e8;--bg2:#ece7db;--text:#1a1a18;
-  --muted:rgba(26,26,24,0.55);--border:rgba(26,26,24,0.12);
-  --dark:var(--bg);--dark2:var(--bg2);--white:var(--text);
-  --nav-bg:rgba(245,240,232,.95);
-  --gold-dim:rgba(160,112,30,0.12);
 }
 
 html{scroll-behavior:smooth;}
@@ -92,16 +84,6 @@ nav.scrolled{background:var(--nav-bg);backdrop-filter:blur(18px);-webkit-backdro
 .nav-right{display:flex;align-items:center;gap:1rem;}
 .nav-cta{padding:.55rem 1.5rem;border:1px solid var(--gold);color:var(--gold);font-family:'DM Sans',sans-serif;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;background:transparent;cursor:pointer;transition:background .3s,color .3s;}
 .nav-cta:hover{background:var(--gold);color:var(--dark);}
-
-/* ====== THEME TOGGLE ====== */
-.theme-toggle{
-  width:36px;height:36px;border:1px solid var(--border);background:transparent;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  transition:border-color .3s,background .3s;
-  -webkit-tap-highlight-color:transparent;position:relative;
-}
-.theme-toggle:hover{border-color:var(--gold);background:var(--gold-dim);}
-.theme-icon{width:18px;height:18px;transition:opacity .3s,transform .3s;}
 
 /* ====== MUSIC TOGGLE ====== */
 .music-toggle{
@@ -179,7 +161,6 @@ nav.scrolled{background:var(--nav-bg);backdrop-filter:blur(18px);-webkit-backdro
 .hero-veil{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(12,11,9,.3) 0%,rgba(12,11,9,.05) 50%,rgba(12,11,9,.75) 100%);
   pointer-events:none;
 }
-[data-theme="light"] .hero-veil{background:linear-gradient(to bottom,rgba(245,240,232,.3) 0%,rgba(245,240,232,.05) 50%,rgba(245,240,232,.75) 100%);}
 .hero-content{position:relative;z-index:5;text-align:center;display:flex;flex-direction:column;align-items:center;gap:1.6rem;padding:0 1.5rem;}
 .eyebrow{font-size:.67rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);opacity:0;animation:fadeUp .9s var(--ease) .4s forwards;}
 .hero-h1{font-family:'Cormorant Garamond',serif;font-size:clamp(3.2rem,9vw,7.2rem);font-weight:300;line-height:1.02;letter-spacing:-.02em;color:var(--white);opacity:0;animation:fadeUp .9s var(--ease) .6s forwards;}
@@ -222,11 +203,10 @@ section{padding:8rem 4rem;transition:var(--section-transition);}
 /* ====== SERVICES ====== */
 #services{background:var(--bg);}
 .services-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:6rem;}
-.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2.5rem;}
-.scard{background:var(--bg2);padding:2.8rem 2.2rem;border:1px solid var(--border);transition:all .4s var(--ease);}
+.scard{background:var(--bg2);padding:3.5rem 2.5rem;border:1px solid var(--border);transition:all .4s var(--ease);position:relative;overflow:hidden;}
 .scard:hover{border-color:var(--gold);transform:translateY(-12px);background:var(--bg);}
 .scard-num{font-family:'Cormorant Garamond',serif;font-size:3.2rem;color:var(--gold-dim);font-weight:300;margin-bottom:1.5rem;}
-.scard h3{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:400;margin-bottom:1.2rem;letter-spacing:.01em;}
+.scard h3{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:400;margin-bottom:12px;letter-spacing:.01em;}
 .scard p{font-size:.88rem;line-height:1.8;color:var(--muted);font-weight:300;margin-bottom:1.8rem;}
 .tags{display:flex;gap:.8rem;flex-wrap:wrap;}
 .tag{font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;padding:.4rem .8rem;background:var(--gold-dim);color:var(--gold);border-radius:20px;}
@@ -348,8 +328,15 @@ section{padding:8rem 4rem;transition:var(--section-transition);}
 .calendly-btn:hover .calendly-icon-svg{transform:scale(1.1);color:var(--dark);}
 
 /* ====== MAP CONTAINER ====== */
-#map-container{width:100%;height:500px;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
-#map{width:100%;height:100%;}
+#map-container{width:100%;height:500px;border:1px solid var(--border);border-radius:8px;overflow:hidden;position:relative;}
+#map-container iframe{
+  width:100%;height:100%;
+  filter: grayscale(1) invert(1) sepia(0.6) hue-rotate(10deg) brightness(0.7) contrast(1.2);
+  transition: filter 0.5s ease;
+}
+#map-container:hover iframe{
+  filter: grayscale(1) invert(1) sepia(0.4) hue-rotate(10deg) brightness(0.8) contrast(1.1);
+}
 
 .fgroup{display:flex;flex-direction:column;gap:2rem;}
 .frow{display:grid;grid-template-columns:1fr 1fr;gap:2rem;}
@@ -404,7 +391,6 @@ footer{padding:6rem 4rem 4rem;background:var(--bg);border-top:1px solid var(--bo
 .calendly-close:hover{color:var(--gold);}
 .calendly-frame-wrap{width:100%;height:100%;}
 .calendly-placeholder{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4rem;text-align:center;}
-.calendly-placeholder h4{font-family:'Cormorant Garamond',serif;font-size:2.4rem;margin-bottom:1.5rem;}
 .calendly-placeholder p{max-width:500px;line-height:1.8;color:var(--muted);margin-bottom:2.5rem;}
 .calendly-placeholder a{padding:1rem 2.5rem;border:1px solid var(--gold);color:var(--gold);text-decoration:none;letter-spacing:.15em;text-transform:uppercase;font-size:.72rem;transition:all .3s;}
 .calendly-placeholder a:hover{background:var(--gold);color:var(--dark);}
@@ -486,19 +472,6 @@ footer{padding:6rem 4rem 4rem;background:var(--bg);border-top:1px solid var(--bo
     <li><a href="#contact">Contact</a></li>
   </ul>
   <div class="nav-right">
-    <button class="theme-toggle" id="themeToggle" title="Toggle dark/light mode">
-      <svg class="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="5"></circle>
-        <line x1="12" y1="1" x2="12" y2="3"></line>
-        <line x1="12" y1="21" x2="12" y2="23"></line>
-        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-        <line x1="1" y1="12" x2="3" y2="12"></line>
-        <line x1="21" y1="12" x2="23" y2="12"></line>
-        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-      </svg>
-    </button>
     <button class="music-toggle" id="musicToggle" title="Play background music">
       <svg class="music-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
         <path d="M9 18V5l12-2v13"></path>
@@ -1131,34 +1104,6 @@ musicToggle.addEventListener('click',()=>{
   musicPlaying=!musicPlaying;
 });
 
-/* ====== THEME TOGGLE ====== */
-const themeToggle = document.getElementById('themeToggle');
-const htmlElement = document.documentElement;
-const savedTheme = localStorage.getItem('theme') || 'dark';
-
-function setTheme(theme) {
-  htmlElement.setAttribute('data-theme', theme);
-  localStorage.setItem('theme', theme);
-  updateThemeIcon(theme);
-}
-
-function updateThemeIcon(theme) {
-  const icon = themeToggle.querySelector('.theme-icon');
-  if (theme === 'light') {
-    icon.innerHTML = '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>';
-  } else {
-    icon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
-  }
-}
-
-setTheme(savedTheme);
-
-themeToggle.addEventListener('click', () => {
-  const currentTheme = htmlElement.getAttribute('data-theme');
-  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-  setTheme(newTheme);
-});
-
 /* ====== SCROLL PROGRESS BAR ====== */
 const progressBar = document.getElementById('progress-bar');
 window.addEventListener('scroll', () => {
@@ -1312,12 +1257,11 @@ function updateCalculator(type, value) {
 
 /* ====== MOBILE PARALLAX DISABLE ====== */
 if (window.innerWidth < 768) {
-  const parallaxElements = document.querySelectorAll('.parallax-element');
+  const parallaxElements = document.querySelectorAll('.parallax-bg');
   parallaxElements.forEach(el => {
-    el.style.transform = 'none';
+    el.style.backgroundAttachment = 'scroll';
   });
 }
-
 </script>
 </body>
 </html>
